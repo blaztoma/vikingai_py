@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vikingų kelias — programavimo nuotykis</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-rune">ᚠ</span>
+      <span class="brand-name">Vikingų kelias</span>
+    </div>
+
+    <div class="progress">
+      <div class="progress-label">
+        Vietovė <span id="progress-current">1</span> / <span id="progress-total">10</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="btn btn-ghost" id="btn-clear-code"
+              title="Ištrinti visus išsaugotus programų tekstus">Šalinti sprendimus</button>
+      <button class="btn btn-ghost" id="btn-reset" title="Pradėti nuo pradžių">Iš naujo</button>
+    </div>
+  </header>
+
+  <main class="stage">
+
+    <!-- ================= ŽEMĖLAPIS ================= -->
+    <section class="map-wrap" id="map-wrap">
+      <svg id="map" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-label="Šiaurės jūrų žemėlapis su 10 vietovių">
+
+        <defs>
+          <!-- jūros gylio gradientas -->
+          <radialGradient id="seaGrad" cx="46%" cy="40%" r="80%">
+            <stop offset="0%"   stop-color="#2a6d8a"/>
+            <stop offset="45%"  stop-color="#17495f"/>
+            <stop offset="100%" stop-color="#07202e"/>
+          </radialGradient>
+
+          <!-- sekluma prie krantų -->
+          <radialGradient id="shallowGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="#5fc4d8" stop-opacity=".55"/>
+            <stop offset="60%"  stop-color="#3f9cb8" stop-opacity=".20"/>
+            <stop offset="100%" stop-color="#3f9cb8" stop-opacity="0"/>
+          </radialGradient>
+
+          <linearGradient id="landGrad" x1="0" y1="0" x2="0.2" y2="1">
+            <stop offset="0%"   stop-color="#7d8a5c"/>
+            <stop offset="45%"  stop-color="#5a6a45"/>
+            <stop offset="100%" stop-color="#37452e"/>
+          </linearGradient>
+
+          <linearGradient id="iceGrad" x1="0" y1="0" x2="0.3" y2="1">
+            <stop offset="0%"   stop-color="#f2f8fb"/>
+            <stop offset="55%"  stop-color="#cfe3ee"/>
+            <stop offset="100%" stop-color="#9dbdd0"/>
+          </linearGradient>
+
+          <linearGradient id="auroraGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#38d39f" stop-opacity="0"/>
+            <stop offset="30%"  stop-color="#5ef0b4" stop-opacity=".75"/>
+            <stop offset="60%"  stop-color="#67c8f0" stop-opacity=".55"/>
+            <stop offset="100%" stop-color="#8a7cf0" stop-opacity="0"/>
+          </linearGradient>
+
+          <radialGradient id="vignetteGrad" cx="50%" cy="50%" r="72%">
+            <stop offset="55%"  stop-color="#000" stop-opacity="0"/>
+            <stop offset="100%" stop-color="#000" stop-opacity=".55"/>
+          </radialGradient>
+
+          <!-- nelygūs, „ranka pieštiį“ krantai -->
+          <filter id="coastRough" x="-8%" y="-8%" width="116%" height="116%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.021" numOctaves="4" seed="7" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="7"
+                               xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+
+          <filter id="softGlow" x="-70%" y="-70%" width="240%" height="240%">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+
+          <filter id="bigBlur" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="14"/>
+          </filter>
+
+          <filter id="cloudBlur" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="7"/>
+          </filter>
+
+          <!-- popieriaus / vandens grūdėtumas -->
+          <filter id="grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="3"/>
+            <feColorMatrix type="saturate" values="0"/>
+          </filter>
+
+          <!-- žemės kontūras naudojamas ir putai -->
+          <clipPath id="mapClip"><rect x="0" y="0" width="1000" height="620"/></clipPath>
+        </defs>
+
+        <g clip-path="url(#mapClip)">
+
+          <!-- ---------- jūra ---------- -->
+          <rect x="0" y="0" width="1000" height="620" fill="url(#seaGrad)"/>
+
+          <!-- šiaurės pašvaistė (pildoma JS) -->
+          <g id="aurora"></g>
+
+          <!-- banguojanti jūra + gyliai (pildoma JS) -->
+          <g id="sea-decor"></g>
+
+          <!-- ---------- žemė ---------- -->
+          <g id="land" filter="url(#coastRough)"
+             fill="url(#landGrad)" stroke="#26301f" stroke-width="2.5" stroke-linejoin="round">
+            <!-- Šiaurės Amerika / Vinlandas -->
+            <path d="M0,170 C48,186 84,206 96,242 C108,278 92,300 100,326
+                     C110,356 78,368 80,398 C82,430 128,448 152,478
+                     C176,506 186,540 160,566 C130,596 70,606 0,612 Z"/>
+            <!-- Grenlandija -->
+            <path d="M182,22 C238,10 306,28 342,58 C372,84 366,118 336,142
+                     C312,162 296,186 262,190 C222,196 186,178 168,146
+                     C150,116 146,58 182,22 Z"/>
+            <!-- Islandija -->
+            <path d="M414,124 C428,104 462,96 496,102 C528,108 546,124 540,144
+                     C534,166 500,182 466,178 C436,174 404,152 414,124 Z"/>
+            <!-- Farerai -->
+            <path d="M606,178 C618,168 636,174 634,190 C632,204 612,208 604,197 Z"/>
+            <!-- Šetlandas -->
+            <path d="M690,230 C704,222 720,232 716,247 C712,261 692,264 686,251 Z"/>
+            <!-- Britanija -->
+            <path d="M672,326 C706,326 734,356 730,398 C726,438 706,470 678,492
+                     C650,514 616,506 612,476 C608,448 626,428 622,404
+                     C618,376 640,326 672,326 Z"/>
+            <!-- Airija -->
+            <path d="M548,392 C584,384 610,406 606,442 C602,478 566,498 538,480
+                     C510,462 512,402 548,392 Z"/>
+            <!-- Skandinavija -->
+            <path d="M1000,24 L926,52 C876,88 848,166 842,246 C836,326 858,398 900,452
+                     C926,486 960,506 1000,514 Z"/>
+            <!-- Europos krantas -->
+            <path d="M742,566 C812,528 902,524 1000,542 L1000,620 L706,620 Z"/>
+          </g>
+
+          <!-- kalnai, miškai, ugnikalnis, kaimai (pildoma JS) -->
+          <g id="land-detail"></g>
+
+          <!-- debesys, paukščiai (pildoma JS) -->
+          <g id="sky-decor"></g>
+
+          <!-- kompaso rožė (pildoma JS) -->
+          <g id="compass"></g>
+
+          <!-- vinjetė -->
+          <rect x="0" y="0" width="1000" height="620" fill="url(#vignetteGrad)" pointer-events="none"/>
+          <rect x="0" y="0" width="1000" height="620" filter="url(#grain)"
+                opacity=".07" pointer-events="none" style="mix-blend-mode:overlay"/>
+
+          <!-- maršruto linijos tarp vietovių (pildoma JS) -->
+          <g id="routes" fill="none"></g>
+
+          <!-- vietovių žymekliai (pildoma JS) -->
+          <g id="markers"></g>
+
+          <!-- laivas (pildoma JS) -->
+          <g id="ship-layer"></g>
+        </g>
+      </svg>
+
+      <!-- kino / kodo sluoksnis virš žemėlapio (pildoma JS) -->
+      <div class="theater" id="theater" hidden></div>
+
+      <div class="map-legend">
+        <span><i class="dot dot-done"></i> įveikta</span>
+        <span><i class="dot dot-current"></i> dabartinė</span>
+        <span><i class="dot dot-locked"></i> laukia</span>
+      </div>
+    </section>
+
+    <!-- tempiamas skirtukas tarp žemėlapio ir uždavinio juostos -->
+    <div class="splitter" id="splitter" role="separator" aria-orientation="vertical"
+         tabindex="0" title="Tempk, kad pakeistum plotį (dvigubas spustelėjimas – pradinis)"></div>
+
+    <!-- ================= SCENOS PANELĖ ================= -->
+    <aside class="panel" id="panel">
+      <div class="panel-kicker" id="panel-kicker">Įžanga</div>
+      <h2 class="panel-title" id="panel-title">Ilga kelionė prasideda</h2>
+      <div class="panel-body" id="panel-body"></div>
+
+      <div class="panel-foot">
+        <div class="hint" id="panel-hint"></div>
+        <button class="btn btn-primary" id="btn-next">Toliau</button>
+      </div>
+    </aside>
+
+  </main>
+</div>
+
+<script src="js/locations.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/theater.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/scenery.js"></script>
+<script src="js/map.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

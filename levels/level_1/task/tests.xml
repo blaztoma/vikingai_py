@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[Leifas
+7
+]]></input>
+   <output visible="1"><![CDATA[Leifas
+7
+Leifas jūroje praleido 7 metus.
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[Astrida
+3
+]]></input>
+   <output visible="1"><![CDATA[Astrida
+3
+Astrida jūroje praleido 3 metus.
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[Bjornas
+9
+]]></input>
+   <output visible="1"><![CDATA[Bjornas
+9
+Bjornas jūroje praleido 9 metus.
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[Eira
+1
+]]></input>
+   <output visible="1"><![CDATA[Eira
+1
+Eira jūroje praleido 1 metus.
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[Haraldas
+25
+]]></input>
+   <output visible="1"><![CDATA[Haraldas
+25
+Haraldas jūroje praleido 25 metus.
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>

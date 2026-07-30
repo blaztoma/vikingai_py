@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<task id="task_90649448">
+    <course>Pitono kursas</course>
+    <title>Kelionė iki Šetlando salų</title>
+    <short>Kelionė</short>
+    <description><![CDATA[<p>Iki Šetlando salų žinomas atstumas jūrmylėmis. Drakaras per vieną dieną nuplaukia tam tikrą jūrmylių skaičių, o kiekvienas įgulos narys per dieną suvalgo po vieną maisto porciją.</p><p>Reikia apskaičiuoti:</p><ul><li>kiek dienų truko kelionė;</li><li>kiek jūrmylių reikėjo nuplaukti paskutinę dieną;</li><li>kiek maisto porcijų liko pasibaigus kelionei.</li></ul><p>Maistas skaičiuojamas ir nepilnai kelionės dienai, todėl jei kelionei prireikia dar vienos dienos, tos dienos maisto sąnaudos taip pat turi būti įskaičiuotos.</p><p><strong>Įvestis</strong><br>Duoti keturi sveikieji skaičiai atskirose eilutėse: atstumas jūrmylėmis, per dieną nuplaukiamos jūrmylės, įgulos dydis ir maisto porcijų kiekis.</p><p><strong>Išvestis</strong><br>Išveskite tris eilutes tokiu formatu: Dienos: X, Paskutinės jūrmylės: Y, Liko porcijų: Z.</p>]]></description>
+    <example><![CDATA[<p><strong>Įvestis:</strong><br>340<br>60<br>25<br>200</p><p><strong>Išvestis:</strong><br>Dienos: 6<br>Paskutinės jūrmylės: 40<br>Liko porcijų: 50</p>]]></example>
+    <skeleton><![CDATA[
+
+]]></skeleton>
+    <drops><![CDATA[]]></drops>
+    <language>lt</language>
+    <programming_language>python_wasm</programming_language>
+    <menu_position>top</menu_position>
+    <author>Tomas Blažauskas</author>
+    <score>100</score>
+    <show_title>0</show_title>
+    <show_description>0</show_description>
+    <show_examples>0</show_examples>
+    <show_icons>0</show_icons>
+    <small_icons>0</small_icons>
+    <use_drops>0</use_drops>
+    <use_hints>0</use_hints>
+    <use_instructions>0</use_instructions>
+    <use_ai>0</use_ai>
+    <use_sc>0</use_sc>
+    <min_code>0</min_code>
+    <max_code>0</max_code>
+    <sc_eval>exponent</sc_eval>
+    <use_pe>0</use_pe>
+    <min_time>0</min_time>
+    <max_time>0</max_time>
+    <pe_eval>exponent</pe_eval>
+    <use_explanations>0</use_explanations>
+    <use_corrections>0</use_corrections>
+    <use_reviews>0</use_reviews>
+    <hints>
+        
+    </hints>
+    <instructions>
+        
+    </instructions>
+    <instruction_criterias>
+        
+    </instruction_criterias>
+    <ai_instructions>
+        
+    </ai_instructions>
+    <show_tests>1</show_tests>
+    <show_files>0</show_files>
+    <files>
+        
+    </files>
+    <button_new>0</button_new>
+    <button_run>0</button_run>
+    <button_assess>0</button_assess>
+    <button_stop>0</button_stop>
+    <button_clear>0</button_clear>
+    <button_upload>0</button_upload>
+    <button_download>0</button_download>
+    <button_debug>0</button_debug>
+</task>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<task id="824806">
+    <course>Pitono kursas</course>
+    <title>Vinlando laukų dalyba</title>
+    <short>Laukų lentelė</short>
+    <description><![CDATA[<p>Naujoji Žemė dalijama į stačiakampį laukų tinklą, sudarytą iš <i>e</i> eilučių ir <i>s</i> stulpelių.</p><p>Kiekvieno lauko naudingumo įvertis lygus jo eilutės numerio ir stulpelio numerio sandaugai.</p><p>Reikia išvesti visą lentelę taip, kad kiekvienoje vietoje būtų parašyta atitinkamo lauko reikšmė. Po lentele reikia išvesti bendrą visų laukų naudingumo sumą formatu <strong>Viso: X</strong>.</p>]]></description>
+    <example><![CDATA[<p><strong>Įvestis:</strong><br>3 4</p><p><strong>Išvestis:</strong><br>1 2 3 4<br>2 4 6 8<br>3 6 9 12<br>Viso: 60</p>]]></example>
+    <skeleton><![CDATA[
+
+
+]]></skeleton>
+    <drops><![CDATA[]]></drops>
+    <language>lt</language>
+    <programming_language>python_wasm</programming_language>
+    <menu_position>top</menu_position>
+    <author>GPT</author>
+    <score>100</score>
+    <show_title>0</show_title>
+    <show_description>0</show_description>
+    <show_examples>0</show_examples>
+    <show_icons>0</show_icons>
+    <small_icons>0</small_icons>
+    <use_drops>0</use_drops>
+    <use_hints>0</use_hints>
+    <use_instructions>0</use_instructions>
+    <use_ai>0</use_ai>
+    <use_sc>0</use_sc>
+    <min_code></min_code>
+    <max_code></max_code>
+    <sc_eval>exponent</sc_eval>
+    <use_pe>0</use_pe>
+    <min_time></min_time>
+    <max_time></max_time>
+    <pe_eval>exponent</pe_eval>
+    <use_explanations>0</use_explanations>
+    <use_corrections>0</use_corrections>
+    <use_reviews>0</use_reviews>
+    <hints>
+        
+    </hints>
+    <instructions>
+        
+    </instructions>
+    <instruction_criterias>
+        
+    </instruction_criterias>
+    <ai_instructions>
+        
+    </ai_instructions>
+    <show_tests>1</show_tests>
+    <show_files>0</show_files>
+    <files>
+        
+    </files>
+    <button_new>0</button_new>
+    <button_run>0</button_run>
+    <button_assess>0</button_assess>
+    <button_stop>0</button_stop>
+    <button_clear>0</button_clear>
+    <button_upload>0</button_upload>
+    <button_download>0</button_download>
+    <button_debug>0</button_debug>
+</task>

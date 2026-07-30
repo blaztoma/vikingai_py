@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[5
+8
+3
+]]></input>
+   <output visible="1"><![CDATA[5
+8
+3
+Statinės: 5
+Grūdų maišai: 8
+Žuvies statinės: 3
+Viso: 16
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[10
+0
+7
+]]></input>
+   <output visible="1"><![CDATA[10
+0
+7
+Statinės: 10
+Grūdų maišai: 0
+Žuvies statinės: 7
+Viso: 17
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[1
+1
+1
+]]></input>
+   <output visible="1"><![CDATA[1
+1
+1
+Statinės: 1
+Grūdų maišai: 1
+Žuvies statinės: 1
+Viso: 3
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[25
+14
+9
+]]></input>
+   <output visible="1"><![CDATA[25
+14
+9
+Statinės: 25
+Grūdų maišai: 14
+Žuvies statinės: 9
+Viso: 48
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[0
+0
+0
+]]></input>
+   <output visible="1"><![CDATA[0
+0
+0
+Statinės: 0
+Grūdų maišai: 0
+Žuvies statinės: 0
+Viso: 0
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>

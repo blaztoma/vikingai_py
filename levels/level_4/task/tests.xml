@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[10 4 30]]></input>
+   <output visible="1"><![CDATA[10 4 30
+Keliaujam
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[5 4 30]]></input>
+   <output visible="1"><![CDATA[5 4 30
+Žiemojam
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[6 4 30]]></input>
+   <output visible="1"><![CDATA[6 4 30
+Keliaujam
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[8 3 50]]></input>
+   <output visible="1"><![CDATA[8 3 50
+Keliaujam
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[7 5 35]]></input>
+   <output visible="1"><![CDATA[7 5 35
+Žiemojam
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>

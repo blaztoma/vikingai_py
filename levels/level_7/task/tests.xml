@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[50
+1
+0.5
+]]></input>
+   <output visible="1"><![CDATA[50
+1
+0.5
+Žingsniai: 50
+Pabėgau
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[10
+1
+1.5
+]]></input>
+   <output visible="1"><![CDATA[10
+1
+1.5
+Žingsniai: 1
+Lava pasivijo
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[5
+0.5
+0.5
+]]></input>
+   <output visible="1"><![CDATA[5
+0.5
+0.5
+Žingsniai: 1
+Lava pasivijo
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[3
+1.3
+0.4
+]]></input>
+   <output visible="1"><![CDATA[3
+1.3
+0.4
+Žingsniai: 3
+Pabėgau
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[7
+0.8
+0.79
+]]></input>
+   <output visible="1"><![CDATA[7
+0.8
+0.79
+Žingsniai: 9
+Pabėgau
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>

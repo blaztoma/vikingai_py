@@ -1,0 +1,950 @@
+/* ===== Vikingų kelias — karkaso stiliai ===== */
+
+:root {
+  --bg:          #0b1620;
+  --bg-2:        #101f2c;
+  --ink:         #e8e2d2;
+  --ink-dim:     #a9b4bd;
+  --gold:        #d9a441;
+  --gold-soft:   #f0c874;
+  --wood:        #6b4a2c;
+  --sea-line:    #7fd0e8;
+  --done:        #6fbf73;
+  --panel-bg:    #14242f;
+  --border:      #2c4252;
+  --radius:      14px;
+  --font: "Segoe UI", Roboto, system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+}
+
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------------------------------------- slankjuostės */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #b8892f #0a151d;
+}
+
+/* Chrome / Edge / Safari */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+
+::-webkit-scrollbar-track {
+  background: #0a151d;
+  border-left: 1px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold-soft), #9c7423);
+  border: 2px solid #0a151d;
+  border-radius: 8px;
+  min-height: 34px;
+}
+::-webkit-scrollbar-thumb:hover  { background: linear-gradient(180deg, #ffdf9b, var(--gold)); }
+::-webkit-scrollbar-thumb:active { background: var(--gold); }
+
+::-webkit-scrollbar-corner { background: #0a151d; }
+
+/* tamsesnėse srityse (kodo pavyzdžiai, konsolė) juosta kuklesnė */
+.example pre::-webkit-scrollbar,
+.code-console-body::-webkit-scrollbar { width: 9px; height: 9px; }
+.example pre::-webkit-scrollbar-track,
+.code-console-body::-webkit-scrollbar-track { background: transparent; border: 0; }
+.example pre::-webkit-scrollbar-thumb,
+.code-console-body::-webkit-scrollbar-thumb {
+  background: #3a5a6b;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.example pre::-webkit-scrollbar-thumb:hover,
+.code-console-body::-webkit-scrollbar-thumb:hover { background: #5f8ba1; background-clip: content-box; }
+
+/* ---------------------------------------------- viršutinė juosta */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 20px;
+  background: linear-gradient(180deg, #16293a, #0f1e2a);
+  border-bottom: 2px solid var(--border);
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-rune { color: var(--gold); font-size: 26px; line-height: 1; }
+.brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.topbar-actions { display: flex; gap: 8px; margin-left: auto; }
+
+.progress { flex: 1; max-width: 420px; }
+.progress-label { font-size: 12px; color: var(--ink-dim); margin-bottom: 5px; letter-spacing: .5px; }
+.progress-bar {
+  height: 8px;
+  background: #0a151d;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+  transition: width .5s ease;
+}
+
+/* ---------------------------------------------- mygtukai */
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 18px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform .1s ease, filter .15s ease;
+}
+.btn:active:not(:disabled) { transform: translateY(1px); }
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+  color: #2a1c05;
+  border-color: #8c6a1c;
+  box-shadow: 0 3px 0 #8c6a1c;
+}
+.btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
+.btn-primary:disabled { opacity: .45; cursor: default; box-shadow: none; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-dim);
+  border-color: var(--border);
+  padding: 8px 14px;
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--gold); }
+
+/* ---------------------------------------------- scena */
+
+.stage {
+  --panel-w: 380px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 10px var(--panel-w);
+  gap: 8px;
+  padding: 16px;
+  min-height: 0;
+}
+
+/* ---------------------------------------------- tempiamas skirtukas */
+
+.splitter {
+  position: relative;
+  cursor: col-resize;
+  border-radius: 8px;
+  background: transparent;
+  transition: background .2s ease;
+  touch-action: none;          /* kad mobiliajame netraukytų puslapio */
+}
+.splitter::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 3px;
+  background: var(--border);
+  transition: background .2s ease, height .2s ease;
+}
+.splitter:hover, .splitter:focus-visible { background: rgba(217, 164, 65, .10); }
+.splitter:hover::before,
+.splitter:focus-visible::before,
+.splitter.active::before { background: var(--gold); height: 76px; }
+.splitter:focus-visible { outline: none; }
+
+/* tempiant: tekstas nesižymi, o iframe'as „nepavagia“ pelės */
+body.resizing { cursor: col-resize; user-select: none; }
+body.resizing iframe { pointer-events: none; }
+
+.map-wrap {
+  position: relative;
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 0;
+}
+
+#map { display: block; width: 100%; height: 100%; }
+
+.map-legend {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--ink-dim);
+  background: rgba(8, 20, 28, .72);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.map-legend span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.dot-done    { background: var(--done); }
+.dot-current { background: var(--gold); }
+.dot-locked  { background: #5b7183; }
+
+/* ---------------------------------------------- jūra ir dekoracijos */
+
+/* banguojanti jūra */
+.wave {
+  fill: none;
+  stroke: #cfeefc;
+  stroke-linecap: round;
+}
+.wave-row {
+  animation-name: waveDrift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.wave-row.rev { animation-name: waveDriftRev; }
+
+@keyframes waveDrift    { from { transform: translateX(0);      } to { transform: translateX(-2000px); } }
+@keyframes waveDriftRev { from { transform: translateX(-2000px);} to { transform: translateX(0);       } }
+
+.shallow { animation: shallowBreathe 9s ease-in-out infinite; }
+@keyframes shallowBreathe { 0%, 100% { opacity: .85; } 50% { opacity: 1; } }
+
+/* šiaurės pašvaistė */
+.aurora-band {
+  opacity: .5;
+  animation-name: auroraShift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes auroraShift {
+  0%, 100% { opacity: .22; transform: translate(0, 0)      scaleY(1);    }
+  35%      { opacity: .62; transform: translate(-18px, 8px) scaleY(1.25); }
+  70%      { opacity: .38; transform: translate(14px, -6px) scaleY(.85);  }
+}
+
+/* sausumos detalės */
+.mtn      { fill: #4a5540; stroke: #29311f; stroke-width: 1.2; stroke-linejoin: round; }
+.mtn-snow { fill: #eaf2f6; opacity: .9; }
+.icecap   { fill: url(#iceGrad); opacity: .88; }
+.pine     { fill: #33512f; stroke: #1e3320; stroke-width: .8; }
+
+.volcano { fill: #4a3a34; }
+.lava    { fill: #ff8b3d; animation: lavaGlow 3.2s ease-in-out infinite; }
+@keyframes lavaGlow { 0%, 100% { opacity: .65; } 50% { opacity: 1; } }
+
+.smoke {
+  fill: rgba(226, 226, 226, .5);
+  animation: smokeRise 5.7s ease-out infinite;
+}
+@keyframes smokeRise {
+  0%   { opacity: 0;   transform: translate(0, 0)      scale(.4); }
+  20%  { opacity: .45; }
+  100% { opacity: 0;   transform: translate(-16px, -46px) scale(1.7); }
+}
+
+/* elementai, sukami/mastelinami apie savo centrą */
+.iceberg, .bird-inner, .compass-star, .marker-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ledkalniai */
+.iceberg { animation: bergBob 7s ease-in-out infinite; }
+.berg        { fill: url(#iceGrad); stroke: #8fb3c8; stroke-width: .8; }
+.berg-lit    { fill: #ffffff; opacity: .55; }
+.berg-shadow { fill: rgba(0, 0, 0, .25); }
+@keyframes bergBob {
+  0%, 100% { transform: translateY(0)    rotate(0deg);   }
+  50%      { transform: translateY(-3px) rotate(-2.5deg); }
+}
+
+/* jūros gyvatė */
+.serpent { animation: serpentSway 11s ease-in-out infinite; opacity: .75; }
+.serpent-body { fill: none; stroke: #2f7a72; stroke-width: 7; stroke-linecap: round; }
+.serpent-head .serpent-body { fill: #2f7a72; stroke-width: 2; }
+.serpent-eye { fill: #ffe08a; }
+@keyframes serpentSway {
+  0%, 100% { transform: translate(296px, 330px) rotate(0deg)  scale(1);    }
+  50%      { transform: translate(316px, 322px) rotate(-4deg) scale(1.04); }
+}
+
+/* debesys ir paukščiai */
+.cloud {
+  animation-name: cloudDrift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.cloud-puff { fill: rgba(226, 240, 248, .30); }
+@keyframes cloudDrift {
+  from { translate: -260px 0; }
+  to   { translate: 1180px 0; }
+}
+
+.bird {
+  animation-name: birdFly;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.bird-inner { animation: birdFlap 0.9s ease-in-out infinite; }
+.wing { fill: none; stroke: rgba(232, 240, 246, .75); stroke-width: 1.8; stroke-linecap: round; }
+@keyframes birdFly {
+  from { translate: -60px 0;  }
+  to   { translate: 1080px -70px; }
+}
+@keyframes birdFlap {
+  0%, 100% { transform: scaleY(1);   }
+  50%      { transform: scaleY(.35); }
+}
+
+/* kompaso rožė */
+.compass { opacity: .5; }
+.compass-ring { fill: none; stroke: var(--gold); stroke-width: 1.6; opacity: .8; }
+.compass-ring.thin { stroke-width: .8; stroke-dasharray: 3 6; }
+.compass-star { animation: compassSway 12s ease-in-out infinite; }
+.star-major { fill: var(--gold-soft); }
+.star-major.dark { fill: #8a6a24; }
+.star-minor { fill: #b98f34; opacity: .8; }
+.compass-letter {
+  fill: var(--gold-soft);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  opacity: .9;
+}
+@keyframes compassSway {
+  0%, 100% { transform: rotate(-2deg); }
+  50%      { transform: rotate(2deg);  }
+}
+
+/* ---------------------------------------------- žemėlapio elementai */
+
+.route-line {
+  stroke: rgba(160, 210, 235, .30);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.route-line.route-done { stroke: rgba(217, 164, 65, .75); }
+.route-line.route-active { stroke: var(--sea-line); stroke-width: 3; }
+.route-track { stroke: none; fill: none; }
+
+.marker { cursor: default; }
+.marker-halo { fill: rgba(217, 164, 65, .18); opacity: 0; transition: opacity .3s ease; }
+.marker-dot {
+  fill: #5b7183;
+  stroke: #0b1620;
+  stroke-width: 2.5;
+  transition: fill .3s ease, r .3s ease;
+}
+.marker-num {
+  text-anchor: middle;
+  font-size: 10px;
+  font-weight: 700;
+  fill: #0b1620;
+  pointer-events: none;
+}
+.marker-label {
+  text-anchor: middle;
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ink-dim);
+  paint-order: stroke;
+  stroke: rgba(8, 20, 28, .85);
+  stroke-width: 3.5;
+  pointer-events: none;
+}
+
+.marker.done .marker-dot { fill: var(--done); }
+.marker.done .marker-label { fill: #bfe2c1; }
+
+.marker.current .marker-dot { fill: var(--gold); }
+.marker.current .marker-halo { opacity: 1; animation: pulse 2s ease-in-out infinite; }
+.marker.current .marker-label { fill: var(--gold-soft); font-size: 15px; }
+
+.marker.locked .marker-label { fill: #7c8d99; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1);   opacity: .55; }
+  50%      { transform: scale(1.5); opacity: .15; }
+}
+
+/* laivas */
+.ship { opacity: 0; transition: opacity .4s ease; }
+.ship.visible { opacity: 1; }
+.ship-hull   { fill: var(--wood); stroke: #3c2917; stroke-width: 1; }
+.ship-mast   { stroke: #3c2917; stroke-width: 2; }
+.ship-sail   { fill: #f0ece0; stroke: #b9b0a0; stroke-width: 1; }
+.ship-stripe { fill: #b23a34; }
+.ship.sailing { animation: bob 1.4s ease-in-out infinite; }
+
+@keyframes bob {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -3px; }
+}
+
+/* ---------------------------------------------- kino / kodo sluoksnis */
+
+.theater {
+  --theater-pad: 18px;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--theater-pad);
+  background: rgba(5, 14, 20, .88);
+  backdrop-filter: blur(3px);
+  animation: theaterIn .45s cubic-bezier(.2, .7, .3, 1);
+  transition: opacity .32s ease, backdrop-filter .32s ease;
+}
+.theater[hidden] { display: none; }
+
+/* sluoksnis pasitraukia prieš kelionę laivu */
+.theater.closing {
+  opacity: 0;
+  backdrop-filter: blur(0);
+  pointer-events: none;
+}
+
+@keyframes theaterIn {
+  from { opacity: 0; backdrop-filter: blur(0); }
+  to   { opacity: 1; backdrop-filter: blur(3px); }
+}
+
+/* --- scenų kaita: filmas ⇄ kodo langas --- */
+
+.scene {
+  transition: opacity .45s cubic-bezier(.2, .7, .3, 1),
+              transform .45s cubic-bezier(.2, .7, .3, 1),
+              filter .45s ease;
+}
+
+/* nauja scena įplaukia iš mažesnio mastelio */
+.scene-enter {
+  opacity: 0;
+  transform: scale(.88) translateY(18px);
+  filter: blur(6px);
+}
+
+/*
+ * Kodo langas – išimtis: jo viduje esantis iframe per mastelio animaciją
+ * perpiešiamas tik jai pasibaigus, todėl atrodytų, lyg langas „šoktelėtų“.
+ * Jam paliekamas tik nublukimas su nedideliu poslinkiu.
+ */
+.code-window.scene {
+  transition: opacity .45s ease;
+  will-change: opacity;
+}
+.code-window.scene-enter {
+  opacity: 0;
+  transform: none;      /* jokio mastelio ir jokio poslinkio – tik nublukimas */
+  filter: none;
+}
+.code-window.scene-leave {
+  transform: none;
+  filter: none;
+}
+
+/* senoji tuo metu nublunka didėdama ir nebeužima vietos */
+.scene-leave {
+  position: absolute;
+  inset: var(--theater-pad);
+  opacity: 0;
+  transform: scale(1.08);
+  filter: blur(8px);
+  pointer-events: none;
+  transition: opacity .32s ease, transform .32s ease, filter .32s ease;
+}
+
+/* --- filmas --- */
+
+.theater-video {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.theater-video video {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .6);
+  background: #000;
+}
+
+.theater-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 2px 10px;
+}
+.theater-title {
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 2px 6px #000;
+}
+.btn-skip {
+  background: rgba(8, 20, 28, .8);
+  backdrop-filter: blur(2px);
+}
+
+.big-play {
+  position: absolute;
+  display: none;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: rgba(8, 20, 28, .85);
+  color: var(--gold-soft);
+  font-size: 32px;
+  cursor: pointer;
+}
+.big-play:hover { background: rgba(20, 40, 52, .9); }
+.theater-video.needs-play .big-play { display: block; }
+
+/* filmo failo dar nėra */
+.missing-card {
+  text-align: center;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 30px 36px;
+  background: rgba(10, 22, 30, .8);
+  max-width: 460px;
+}
+.missing-icon { font-size: 40px; color: var(--gold); opacity: .65; }
+.missing-card h3 { margin: 10px 0 6px; font-size: 18px; }
+.missing-card p  { margin: 0 0 10px; color: var(--ink-dim); font-size: 14px; }
+.missing-card code {
+  display: inline-block;
+  margin-bottom: 16px;
+  background: #08131b;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: var(--gold-soft);
+}
+.missing-card .btn { display: block; width: 100%; }
+
+/* --- programavimo langas (placeholderis) --- */
+
+.code-window {
+  width: 100%;
+  height: 100%;
+  max-width: 940px;
+  display: flex;
+  flex-direction: column;
+  background: #0b1a24;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+  overflow: hidden;
+}
+
+.code-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  background: linear-gradient(180deg, #16293a, #102030);
+  border-bottom: 1px solid var(--border);
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dots i { width: 10px; height: 10px; border-radius: 50%; background: #37505f; }
+.code-dots i:first-child { background: #b2543f; }
+.code-dots i:nth-child(2) { background: #b99a3f; }
+.code-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+.code-lang {
+  margin-left: auto;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(217, 164, 65, .4);
+  border-radius: 20px;
+  padding: 2px 10px;
+}
+
+/* visą lango vidurį užima lygio programa (iframe) */
+/* lango mygtukai antraštėje */
+.win-buttons { display: flex; gap: 5px; margin-left: 12px; }
+.win-btn {
+  width: 28px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.win-btn:hover:not(:disabled) {
+  background: rgba(217, 164, 65, .18);
+  border-color: var(--gold);
+  color: var(--gold-soft);
+}
+.win-btn:disabled { opacity: .3; cursor: default; }
+
+/* --- sutrauktas langas: matosi žemėlapis, lieka tik antraštė --- */
+.theater.minimized {
+  background: transparent;
+  backdrop-filter: none;
+  pointer-events: none;              /* pelė pasiekia žemėlapį */
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.theater.minimized .code-window {
+  pointer-events: auto;
+  width: auto;
+  max-width: min(460px, 100%);
+  height: auto;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .55);
+}
+.theater.minimized .code-main,
+.theater.minimized .code-toolbar { display: none; }
+.theater.minimized .code-titlebar { cursor: pointer; }
+
+.code-main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background: transparent;
+}
+
+.code-frame {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: transparent;
+  opacity: 0;                          /* rodomas tik susikrovus */
+  transition: opacity .4s ease;
+}
+.code-frame.ready { opacity: 1; }
+
+/* kol lygio aplinka kraunasi – mūsų pačių indikatorius jau galutinio dydžio lange */
+.frame-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  transition: opacity .35s ease;
+}
+.frame-loading.gone { opacity: 0; pointer-events: none; }
+
+.frame-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(217, 164, 65, .2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: frameSpin 1s linear infinite;
+}
+.frame-loading-text { font-size: 13px; color: var(--ink-dim); letter-spacing: .3px; }
+
+@keyframes frameSpin { to { transform: rotate(360deg); } }
+
+/* lygio programos dar nėra */
+.frame-missing {
+  margin: auto;
+  text-align: center;
+  padding: 26px 32px;
+  max-width: 460px;
+  color: var(--ink-dim);
+}
+.frame-missing h3 { margin: 8px 0 8px; font-size: 17px; color: var(--ink); }
+.frame-missing p  { margin: 0 0 10px; font-size: 13.5px; }
+.frame-missing code {
+  display: inline-block;
+  background: #08131b;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 9px;
+  font-size: 12.5px;
+  color: var(--gold-soft);
+}
+.frame-missing-note { margin-top: 14px; font-size: 12.5px; opacity: .8; }
+
+.code-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #0e1f2b;
+  border-top: 1px solid var(--border);
+}
+.code-note { flex: 1; font-size: 12px; color: var(--ink-dim); font-style: italic; }
+.code-note.error { color: #e8907f; font-style: normal; }
+.code-toolbar .btn { padding: 7px 16px; font-size: 13px; }
+.code-toolbar .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ---------------------------------------------- panelė */
+
+.panel {
+  background: var(--panel-bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+}
+
+.panel-kicker {
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.panel-title {
+  margin: 0 0 14px;
+  font-size: 24px;
+  line-height: 1.2;
+}
+.panel-body { flex: 1; font-size: 14.5px; line-height: 1.6; color: #d5d9dd; }
+.panel-body.fade-in { animation: panelFade .45s cubic-bezier(.2, .7, .3, 1); }
+@keyframes panelFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+.panel-body p { margin: 0 0 14px; }
+.panel-body .subtitle { color: var(--ink-dim); font-style: italic; }
+.panel-body code {
+  background: #0a151d;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-size: 12.5px;
+  color: var(--gold-soft);
+}
+
+/* uždavinio kortelė */
+.task-card {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--done);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .20);
+  padding: 14px 16px;
+}
+/* kortelės: Užduotis / Teorija */
+.task-tabs {
+  display: flex;
+  gap: 4px;
+  margin: -14px -16px 14px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, .22);
+  border-radius: 8px 8px 0 0;
+}
+.tab-btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-dim);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active {
+  color: var(--gold-soft);
+  border-bottom-color: var(--gold);
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: panelFade .3s ease; }
+
+.task-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: var(--gold-soft);
+}
+.task-story { color: var(--ink-dim); font-style: italic; font-size: 13.5px; }
+.task-goal  { margin-bottom: 12px; }
+
+.task-io {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, .25);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.task-io dt {
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+.task-io dt:first-child { margin-top: 0; }
+.task-io dd { margin: 2px 0 0; color: #ccd3d9; }
+
+.example { margin-bottom: 10px; }
+.example-head {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 5px;
+}
+.example-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.io-label { font-size: 10.5px; color: var(--ink-dim); letter-spacing: .5px; }
+.example pre {
+  margin: 3px 0 0;
+  padding: 8px 10px;
+  background: #08131b;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #d7e6c9;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+/* teorijos turinys */
+.theory { font-size: 13.5px; line-height: 1.65; }
+.theory p  { margin: 0 0 10px; }
+.theory ul { margin: 0 0 10px; padding-left: 20px; }
+.theory li { margin-bottom: 4px; }
+.theory b  { color: var(--ink); }
+.theory u  { text-decoration-color: var(--gold); }
+.theory pre {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: #08131b;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+.theory pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #d7e6c9;
+  white-space: pre;
+}
+
+.task-hint summary {
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 0;
+  list-style: none;
+}
+.task-hint summary::before { content: '💡 '; }
+.task-hint summary:hover { color: var(--gold-soft); }
+.task-hint p { margin: 6px 0 0; font-size: 13px; color: var(--ink-dim); }
+
+.placeholder {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 22px 16px;
+  text-align: center;
+  background: rgba(0, 0, 0, .18);
+}
+.placeholder-icon { font-size: 30px; color: var(--gold); opacity: .7; margin-bottom: 8px; }
+.placeholder-text { font-size: 13px; color: var(--ink-dim); line-height: 1.5; }
+.placeholder.task { border-color: #3a5a44; }
+.placeholder.task .placeholder-icon { color: var(--done); }
+
+/* uždavinys išspręstas (signalas iš lygio iframe) */
+.panel.solved { border-color: var(--done); }
+.panel.solved .hint { color: #9ede9f; font-weight: 600; }
+.panel.solved .task-card { border-left-color: var(--done); background: rgba(111, 191, 115, .08); }
+
+.btn.pulse { animation: btnPulse 1.6s ease-in-out infinite; }
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 3px 0 #8c6a1c, 0 0 0 0 rgba(217, 164, 65, .55); }
+  50%      { box-shadow: 0 3px 0 #8c6a1c, 0 0 0 10px rgba(217, 164, 65, 0); }
+}
+
+.panel-foot { padding-top: 16px; border-top: 1px solid var(--border); margin-top: 16px; }
+.hint { font-size: 12px; color: var(--ink-dim); min-height: 18px; margin-bottom: 10px; }
+.panel-foot .btn-primary { width: 100%; }
+
+/* ---------------------------------------------- adaptyvumas */
+
+@media (max-width: 1000px) {
+  .stage {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(320px, 1fr) auto;
+    gap: 12px;
+  }
+  .splitter { display: none; }   /* siaurame ekrane langai vienas po kitu */
+  .panel { max-height: 46vh; }
+  .theater { --theater-pad: 10px; }
+}
+
+/* mažiau judesio – jei vartotojas taip pasirinkęs sistemoje */
+@media (prefers-reduced-motion: reduce) {
+  .wave-row, .cloud, .bird, .bird-inner, .iceberg, .serpent, .aurora-band,
+  .smoke, .compass-star, .shallow,
+  .marker.current .marker-halo, .ship.sailing, .panel-body.fade-in {
+    animation: none !important;
+  }
+  .theater, .scene { transition: none !important; animation: none !important; }
+  .frame-spinner { animation: none !important; }
+  .scene-enter { opacity: 1; transform: none; filter: none; }
+}

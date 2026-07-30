@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[8
+žalia
+]]></input>
+   <output visible="1"><![CDATA[8
+žalia
+Žvejai
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[18
+balta
+]]></input>
+   <output visible="1"><![CDATA[18
+balta
+Prekeiviai
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[31
+žalia
+]]></input>
+   <output visible="1"><![CDATA[31
+žalia
+Karo laivas
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[12
+juoda
+]]></input>
+   <output visible="1"><![CDATA[12
+juoda
+Karo laivas
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[20
+žalia
+]]></input>
+   <output visible="1"><![CDATA[20
+žalia
+Nežinomas
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>

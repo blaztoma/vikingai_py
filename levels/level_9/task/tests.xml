@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[5
+4
+2
+7
+9
+5
+]]></input>
+   <output visible="1"><![CDATA[5
+4
+2
+7
+9
+5
+Vidurkis: 5.4
+Mažiausiai: 2 diena
+Daugiausiai: 4 diena
+Nepuls
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[5
+3
+4
+6
+10
+2
+]]></input>
+   <output visible="1"><![CDATA[5
+3
+4
+6
+10
+2
+Vidurkis: 5.0
+Mažiausiai: 5 diena
+Daugiausiai: 4 diena
+Nepuls
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[1
+8
+]]></input>
+   <output visible="1"><![CDATA[1
+8
+Vidurkis: 8.0
+Mažiausiai: 1 diena
+Daugiausiai: 1 diena
+Puls
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[4
+2
+2
+2
+2
+]]></input>
+   <output visible="1"><![CDATA[4
+2
+2
+2
+2
+Vidurkis: 2.0
+Mažiausiai: 1 diena
+Daugiausiai: 1 diena
+Nepuls
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[6
+1
+3
+5
+7
+9
+11
+]]></input>
+   <output visible="1"><![CDATA[6
+1
+3
+5
+7
+9
+11
+Vidurkis: 6.0
+Mažiausiai: 1 diena
+Daugiausiai: 6 diena
+Puls
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>

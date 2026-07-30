@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<task id="task_94638643">
+    <course>Pitono kursas</course>
+    <title>Sargybinis prie kranto</title>
+    <short>Laivo tipas</short>
+    <description><![CDATA[<p>Lindisfarno sargybinis pastebi artėjantį laivą ir turi nuspręsti, kas tai per laivas. Sprendimas priklauso nuo dviejų požymių: irklų skaičiaus ir vėliavos spalvos.</p><p>Nustatyk laivo tipą pagal šias taisykles:</p><ul><li><strong>Žvejai</strong>, jei irklų mažiau nei 10;</li><li><strong>Prekeiviai</strong>, jei irklų nuo 10 iki 29 imtinai ir vėliava <i>balta</i>;</li><li><strong>Karo laivas</strong>, jei irklų 30 ar daugiau arba vėliava <i>juoda</i>;</li><li><strong>Nežinomas</strong> visais kitais atvejais.</li></ul><p>Pirmoje eilutėje pateikiamas irklų skaičius, antroje – vėliavos spalva: <i>balta</i>, <i>juoda</i> arba <i>žalia</i>.</p><p>Reikia išvesti vieną eilutę su nustatytu laivo tipu.</p>]]></description>
+    <example><![CDATA[<p><strong>Įvestis:</strong><br>18<br>balta</p><p><strong>Išvestis:</strong><br>Prekeiviai</p>]]></example>
+    <skeleton><![CDATA[
+
+]]></skeleton>
+    <drops><![CDATA[]]></drops>
+    <language>lt</language>
+    <programming_language>python_wasm</programming_language>
+    <menu_position>top</menu_position>
+    <author>GPT</author>
+    <score>100</score>
+    <show_title>0</show_title>
+    <show_description>0</show_description>
+    <show_examples>0</show_examples>
+    <show_icons>0</show_icons>
+    <small_icons>0</small_icons>
+    <use_drops>0</use_drops>
+    <use_hints>0</use_hints>
+    <use_instructions>0</use_instructions>
+    <use_ai>0</use_ai>
+    <use_sc>0</use_sc>
+    <min_code>0</min_code>
+    <max_code>0</max_code>
+    <sc_eval>exponent</sc_eval>
+    <use_pe>0</use_pe>
+    <min_time>0</min_time>
+    <max_time>0</max_time>
+    <pe_eval>exponent</pe_eval>
+    <use_explanations>0</use_explanations>
+    <use_corrections>0</use_corrections>
+    <use_reviews>0</use_reviews>
+    <hints>
+        
+    </hints>
+    <instructions>
+        
+    </instructions>
+    <instruction_criterias>
+        
+    </instruction_criterias>
+    <ai_instructions>
+        
+    </ai_instructions>
+    <show_tests>1</show_tests>
+    <show_files>0</show_files>
+    <files>
+        
+    </files>
+    <button_new>0</button_new>
+    <button_run>0</button_run>
+    <button_assess>0</button_assess>
+    <button_stop>0</button_stop>
+    <button_clear>0</button_clear>
+    <button_upload>0</button_upload>
+    <button_download>0</button_download>
+    <button_debug>0</button_debug>
+</task>

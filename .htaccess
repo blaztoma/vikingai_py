@@ -1,0 +1,8 @@
+# Kūrimo metu naršyklė neturi laikyti senų JS/CSS versijų podėlyje.
+# Kai žaidimas bus paleistas naudojimui, šį failą galima ištrinti.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|html)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate"
+    Header set Pragma "no-cache"
+  </FilesMatch>
+</IfModule>

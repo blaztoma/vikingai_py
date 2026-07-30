@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[340
+60
+25
+200
+]]></input>
+   <output visible="1"><![CDATA[340
+60
+25
+200
+Dienos: 6
+Paskutinės jūrmylės: 40
+Liko porcijų: 50
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[120
+40
+10
+50
+]]></input>
+   <output visible="1"><![CDATA[120
+40
+10
+50
+Dienos: 3
+Paskutinės jūrmylės: 40
+Liko porcijų: 20
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[1
+5
+3
+10
+]]></input>
+   <output visible="1"><![CDATA[1
+5
+3
+10
+Dienos: 1
+Paskutinės jūrmylės: 1
+Liko porcijų: 7
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[500
+100
+20
+120
+]]></input>
+   <output visible="1"><![CDATA[500
+100
+20
+120
+Dienos: 5
+Paskutinės jūrmylės: 100
+Liko porcijų: 20
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[999
+128
+17
+200
+]]></input>
+   <output visible="1"><![CDATA[999
+128
+17
+200
+Dienos: 8
+Paskutinės jūrmylės: 103
+Liko porcijų: 64
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>

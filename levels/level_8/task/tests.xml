@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[12
+5
+20
+3
+0
+]]></input>
+   <output visible="1"><![CDATA[12
+5
+20
+3
+0
+Suma: 40
+Žvejai: 4
+Sėkmingi: 2
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[0
+]]></input>
+   <output visible="1"><![CDATA[0
+Suma: 0
+Žvejai: 0
+Sėkmingi: 0
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[11
+10
+9
+0
+]]></input>
+   <output visible="1"><![CDATA[11
+10
+9
+0
+Suma: 30
+Žvejai: 3
+Sėkmingi: 1
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[15
+25
+30
+0
+]]></input>
+   <output visible="1"><![CDATA[15
+25
+30
+0
+Suma: 70
+Žvejai: 3
+Sėkmingi: 3
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[1
+2
+3
+4
+5
+0
+]]></input>
+   <output visible="1"><![CDATA[1
+2
+3
+4
+5
+0
+Suma: 15
+Žvejai: 5
+Sėkmingi: 0
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>

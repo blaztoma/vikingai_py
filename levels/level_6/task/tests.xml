@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+ <test id="test_1">
+  <console>
+   <input visible="1"><![CDATA[10
+4
+]]></input>
+   <output visible="1"><![CDATA[10
+4
+1 x 10 = 10.00 (-0%)
+2 x 10 = 19.00 (-5%)
+3 x 10 = 27.00 (-10%)
+4 x 10 = 34.00 (-15%)
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_2">
+  <console>
+   <input visible="1"><![CDATA[7
+1
+]]></input>
+   <output visible="1"><![CDATA[7
+1
+1 x 7 = 7.00 (-0%)
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_3">
+  <console>
+   <input visible="1"><![CDATA[25
+5
+]]></input>
+   <output visible="1"><![CDATA[25
+5
+1 x 25 = 25.00 (-0%)
+2 x 25 = 47.50 (-5%)
+3 x 25 = 67.50 (-10%)
+4 x 25 = 85.00 (-15%)
+5 x 25 = 100.00 (-20%)
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_4">
+  <console>
+   <input visible="1"><![CDATA[3
+6
+]]></input>
+   <output visible="1"><![CDATA[3
+6
+1 x 3 = 3.00 (-0%)
+2 x 3 = 5.70 (-5%)
+3 x 3 = 8.10 (-10%)
+4 x 3 = 10.20 (-15%)
+5 x 3 = 12.00 (-20%)
+6 x 3 = 13.50 (-25%)
+]]></output>
+  </console>
+  <files/>
+ </test>
+ <test id="test_5">
+  <console>
+   <input visible="1"><![CDATA[12
+3
+]]></input>
+   <output visible="1"><![CDATA[12
+3
+1 x 12 = 12.00 (-0%)
+2 x 12 = 22.80 (-5%)
+3 x 12 = 32.40 (-10%)
+]]></output>
+  </console>
+  <files/>
+ </test>
+</tests>
