@@ -1,0 +1,14 @@
+{
+  "name": "vikings-py-scorm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vikingų kelias (Python) — SCORM 2004 paketas Moodle aplinkai",
+  "scripts": {
+    "package": "node tools/pack.js",
+    "package:lite": "node tools/pack.js --no-videos",
+    "build:viewer": "node tools/build-viewer.js"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

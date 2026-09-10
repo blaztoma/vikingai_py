@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprendimų peržiūra — bandymai</title>
+<link rel="stylesheet" href="results-viewer.css">
+<style>
+  :root { --gold: #d9a441; --gold-soft: #f0c874; --border: #2c4252; --ink: #e8e2d2; --dim: #a9b4bd; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px 20px; min-height: 100vh;
+    background: #0b1620; color: var(--ink);
+    font-family: "Segoe UI", Roboto, system-ui, sans-serif; line-height: 1.6;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 6px; color: var(--gold-soft); }
+  p { font-size: 14.5px; color: #d5d9dd; }
+  .lead { color: var(--dim); margin-top: 0; }
+  textarea {
+    width: 100%; height: 220px; margin-top: 10px; padding: 12px;
+    background: #08131b; color: #d7e6c9; border: 1px solid var(--border);
+    border-radius: 10px; font-family: Consolas, "Courier New", monospace; font-size: 12.5px;
+    resize: vertical;
+  }
+  .row { display: flex; gap: 10px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+  button {
+    font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+    color: var(--dim); background: transparent; border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 18px;
+  }
+  button:hover { color: var(--ink); border-color: var(--gold); }
+  button.main {
+    background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+    color: #2a1c05; border-color: #8c6a1c; box-shadow: 0 3px 0 #8c6a1c;
+  }
+  .status { font-size: 13px; color: var(--dim); }
+  a { color: var(--gold-soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Sprendimų peržiūra — bandymai</h1>
+  <p class="lead">Puslapis skirtas išbandyti peržiūros langą be Moodle. Įklijuok įrašytą
+     „Sekimo išsami informacija“ puslapio HTML (naršyklėje <b>Ctrl+U</b> → viską pažymėti → kopijuoti)
+     arba spausk „Įkelti pavyzdį“.</p>
+  <p>Kasdieniam darbui naudok <a href="bookmarklet.html">bookmarklet.html</a>.</p>
+
+  <textarea id="html" placeholder="Čia įklijuok ataskaitos puslapio HTML…"></textarea>
+
+  <div class="row">
+    <button class="main" id="open" type="button">Atidaryti peržiūrą</button>
+    <button id="sample" type="button">Įkelti pavyzdį</button>
+    <span class="status" id="status"></span>
+  </div>
+
+</div>
+
+<script>
+  // peržiūra neturi atsidaryti iškart – čia ją paleidžia mygtukas
+  window.VIKINGS_VIEWER_AUTORUN = false;
+</script>
+<script src="results-viewer.js"></script>
+<script>
+(function () {
+  const area   = document.getElementById('html');
+  const status = document.getElementById('status');
+
+  /** Trumpas pavyzdys – tokios pat struktūros lentelė kaip Moodle ataskaitoje */
+  function sampleHtml() {
+    const code1 =
+      '#include <bits/stdc++.h>\n' +
+      'using namespace std;\n\n' +
+      'int main() {\n' +
+      '    string vardas;\n' +
+      '    int metai;\n\n' +
+      '    cin >> vardas >> metai;\n' +
+      '    cout << vardas << " jūroje praleido " << metai << " metus.";\n\n' +
+      '    return 0;\n' +
+      '}';
+    const code2 =
+      '#include <iostream>\n' +
+      'using namespace std;\n\n' +
+      'int main() {\n' +
+      '    int statines, grudai, zuvis;\n' +
+      '    cin >> statines >> grudai >> zuvis;\n\n' +
+      '    cout << "Statinės: " << statines << endl;\n' +
+      '    cout << "Grūdų maišai: " << grudai << endl;\n' +
+      '    cout << "Žuvies statinės: " << zuvis << endl;\n' +
+      '    cout << "Viso: " << statines + grudai + zuvis << endl;\n' +
+      '    return 0;\n' +
+      '}';
+
+    const toB64 = (text) => {
+      const bytes = new TextEncoder().encode(text);
+      let binary = '';
+      bytes.forEach(b => binary += String.fromCharCode(b));
+      return btoa(binary);
+    };
+
+    const suspend = JSON.stringify({
+      v: 3, phase: 'task', index: 2, completed: 2,
+      solved: [1, 2], scores: { 1: 100, 2: 80 },
+      code: { 1: toB64(code1), 2: toB64(code2) }
+    });
+
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+    return `<!DOCTYPE html><html><body>
+      <div id="region-main">
+        <h3>Bandymas 1 - Tomas Blažauskas: Vikingų kelias (C++) - Sekimo išsami informacija</h3>
+        <table class="scormtrackreport"><tbody>
+          <tr><td class="cell c0">cmi.completion_status</td><td class="cell c1">incomplete</td></tr>
+          <tr><td class="cell c0">cmi.location</td><td class="cell c1">2</td></tr>
+          <tr><td class="cell c0">cmi.progress_measure</td><td class="cell c1">0.2</td></tr>
+          <tr><td class="cell c0">cmi.score.raw</td><td class="cell c1">20</td></tr>
+          <tr><td class="cell c0">cmi.score.scaled</td><td class="cell c1">0.2</td></tr>
+          <tr><td class="cell c0">cmi.success_status</td><td class="cell c1">failed</td></tr>
+          <tr><td class="cell c0">cmi.suspend_data</td><td class="cell c1">${esc(suspend)}</td></tr>
+        </tbody></table>
+      </div></body></html>`;
+  }
+
+  document.getElementById('sample').addEventListener('click', () => {
+    area.value = sampleHtml();
+    status.textContent = 'Pavyzdys įkeltas — spausk „Atidaryti peržiūrą“.';
+  });
+
+  document.getElementById('open').addEventListener('click', () => {
+    const html = area.value.trim();
+    if (!html) {
+      status.textContent = 'Pirma įklijuok puslapio HTML arba įkelk pavyzdį.';
+      return;
+    }
+    status.textContent = '';
+    VikingsResultsViewer.openFromHtml(html);
+  });
+})();
+</script>
+</body>
+</html>

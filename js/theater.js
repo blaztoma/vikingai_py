@@ -132,6 +132,9 @@ const Theater = (function () {
     stopVideo();
     lastCoding = { loc, task };
 
+    // lygio rėmelio SCORM kreipiniai nuo šiol priklauso šiam lygiui
+    if (typeof LevelScormShim !== 'undefined') LevelScormShim.setLevel(loc.id);
+
     const box = document.createElement('div');
     box.className = 'code-window';
     box.innerHTML = `
@@ -148,7 +151,7 @@ const Theater = (function () {
       </div>
 
       <div class="code-main">
-        <iframe class="code-frame" src="${loc.task}"
+        <iframe class="code-frame" src="${levelUrl(loc)}"
                 title="Programavimo aplinka: ${loc.name}"></iframe>
         <div class="frame-loading">
           <div class="frame-spinner"></div>
@@ -268,6 +271,7 @@ const Theater = (function () {
         loader.classList.add('gone');
         setTimeout(() => loader.remove(), 400);
       }
+      notifyReady(frame);
     };
 
     const check = () => {
@@ -379,22 +383,28 @@ const Theater = (function () {
   }
 
   /**
-   * Jei lygio kataloge dar nėra index.html, serveris grąžina katalogo sąrašą –
-   * tada vietoj jo rodome paaiškinimą. Puslapio turinio netikriname: programavimo
-   * aplinka gali būti generuojama JS'u, todėl tuščias <body> nieko nereiškia.
+   * Patikrina, ar lygio programa tikrai pasiekiama. Puslapio turinio netikriname:
+   * programavimo aplinka generuojama JS'u, todėl tuščias <body> nieko nereiškia.
+   * Nesėkmės priežastis parodoma vartotojui — kitaip lieka neaišku, ar failo nėra,
+   * ar serveris jo neatiduoda.
    */
   function watchFrame(frame, loc) {
-    frame.addEventListener('error', () => frameFallback(frame, loc));
+    const url = levelUrl(loc);
 
-    fetch(loc.task)
-      .then(res => (res.ok ? res.text() : Promise.reject(new Error(res.status))))
+    frame.addEventListener('error', () => frameFallback(frame, loc, 'rėmelio įkelti nepavyko'));
+
+    fetch(url)
+      .then(res => (res.ok ? res.text() : Promise.reject(new Error('serveris atsakė ' + res.status))))
       .then(html => {
-        if (/<title>\s*Index of/i.test(html)) frameFallback(frame, loc);
+        // katalogo sąrašas vietoj puslapio = kataloge nėra index.html
+        if (/<title>\s*Index of/i.test(html)) {
+          frameFallback(frame, loc, 'kataloge nerastas index.html');
+        }
       })
-      .catch(() => frameFallback(frame, loc));
+      .catch(err => frameFallback(frame, loc, String((err && err.message) || err)));
   }
 
-  function frameFallback(frame, loc) {
+  function frameFallback(frame, loc, reason) {
     const holder = frame.parentNode;
     if (!holder || !frame.isConnected) return;   // etapas jau pasikeitė
 
@@ -402,16 +412,55 @@ const Theater = (function () {
     if (win) {
       win.querySelectorAll('.code-toolbar .btn').forEach(b => { b.disabled = true; });
       const note = win.querySelector('#code-note');
-      if (note) note.textContent = 'Nėra ko paleisti — lygio programa neįkelta';
+      if (note) note.textContent = 'Nėra ko paleisti — lygio programa nepasiekiama';
     }
     holder.innerHTML = `
       <div class="frame-missing">
         <div class="missing-icon">⌨</div>
-        <h3>Šio lygio programa dar neįkelta</h3>
-        <p>Programavimo aplinka bus įkeliama iš katalogo:</p>
-        <code>${loc.task}</code>
-        <p class="frame-missing-note">Įdėk ten <code>index.html</code> — jis iškart atsiras šiame lange.</p>
+        <h3>Šio lygio programos nepavyko įkelti</h3>
+        <p>Bandyta atidaryti:</p>
+        <code>${levelUrl(loc)}</code>
+        <p class="frame-missing-note">${reason ? 'Priežastis: ' + reason : ''}</p>
       </div>`;
+
+    console.warn(`[Theater] ${levelUrl(loc)} neįkeltas: ${reason || 'nežinoma priežastis'}`);
+  }
+
+  /* ------------------------------------------- lygio kodas ir pasirengimas */
+
+  let readyHandler = null;
+
+  /** Kviečiama, kai lygio aplinka jau susikrovė ir redaktorius veikia */
+  function notifyReady(frame) {
+    if (!readyHandler || !lastCoding) return;
+    try {
+      readyHandler(lastCoding.loc, frame.contentWindow);
+    } catch (e) {
+      console.warn('[Theater] Klaida apdorojant paruošto lygio įvykį:', e);
+    }
+  }
+
+  /** Grąžina šiuo metu redaktoriuje esantį programos tekstą (arba '') */
+  function getLevelCode() {
+    const frame = root.querySelector('.code-frame');
+    if (!frame) return '';
+    try {
+      const win = frame.contentWindow;
+      return (win && typeof win.getProgram === 'function') ? String(win.getProgram()) : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  /** Įrašo programos tekstą į lygio redaktorių */
+  function setLevelCode(win, code) {
+    try {
+      if (win && typeof win.setProgram === 'function' && code) {
+        win.setProgram(code);
+        return true;
+      }
+    } catch (e) { /* rėmelis jau uždarytas */ }
+    return false;
   }
 
   /** Atidarytą lygį įkelia iš naujo (pvz., ištrynus išsaugotus sprendimus) */
@@ -420,5 +469,9 @@ const Theater = (function () {
     showCoding(lastCoding.loc, lastCoding.task);
   }
 
-  return { showVideo, showCoding, hide, reloadLevel };
+  return {
+    showVideo, showCoding, hide, reloadLevel,
+    getLevelCode, setLevelCode,
+    onLevelReady: (fn) => { readyHandler = fn; }
+  };
 })();

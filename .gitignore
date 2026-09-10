@@ -1,3 +1,6 @@
 .idea/
 .junie/
 vikings.iml
+node_modules/
+
+# dist/

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<title>Blokelio bandymas — imituojamas Moodle puslapis</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; display: flex; min-height: 100vh; }
+  main { flex: 1; padding: 30px; }
+  aside { width: 300px; padding: 20px; background: #f1f3f5; border-left: 1px solid #dee2e6; }
+  h1 { font-size: 20px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  td { border: 1px solid #dee2e6; padding: 6px 10px; vertical-align: top; }
+  td.c1 { word-break: break-all; }
+  .note { color: #666; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<main id="region-main">
+  <h3>Bandymas 1 - Tomas Blažauskas: Vikingų kelias (Python) - Sekimo išsami informacija</h3>
+  <p class="note">Šis puslapis imituoja Moodle SCORM sekimo ataskaitą. Dešinėje — „blokelis“
+     su įklijuotu <code>../dist/moodle-block.html</code> turiniu.</p>
+
+  <table class="scormtrackreport"><tbody id="tracks"></tbody></table>
+</main>
+
+<aside>
+  <h1>Blokelis</h1>
+  <div id="block-slot"></div>
+</aside>
+
+<script>
+/** Pavyzdiniai duomenys — tokie, kokius žaidimas įrašo į cmi.suspend_data */
+const SAMPLE = {
+  game: {
+    id: 'vikings-py', title: 'Vikingų kelias (Python)', lang: 'lt', codeLang: 'python', total: 10,
+    levels: [
+      { id: 1,  name: 'Bjornheimas',    topic: 'Įvestis ir išvestis' },
+      { id: 2,  name: 'Haugro uostas',  topic: 'Kintamieji' },
+      { id: 3,  name: 'Šetlando salos', topic: 'Matematinės operacijos' },
+      { id: 4,  name: 'Farerų salos',   topic: 'Sąlyga if' },
+      { id: 5,  name: 'Lindisfarnas',   topic: 'Sudėtinės sąlygos (if / else if)' },
+      { id: 6,  name: 'Dublinas',       topic: 'Ciklas for' },
+      { id: 7,  name: 'Islandija',      topic: 'Ciklas while' },
+      { id: 8,  name: 'Grenlandija',    topic: 'Suma ir kiekis' },
+      { id: 9,  name: 'Helulandas',     topic: 'Vidurkis, didžiausia ir mažiausia reikšmė' },
+      { id: 10, name: 'Vinlandas',      topic: 'Ciklas cikle' }
+    ]
+  },
+  solved: [1, 2],
+  scores: { 1: 100, 2: 80 },
+  code: {
+    1: [
+      'vardas = input()',
+      'metai = int(input())',
+      '',
+      'print(f"{vardas} jūroje praleido {metai} metus.")'
+    ].join('\n'),
+    2: [
+      'statines = int(input())',
+      'grudai = int(input())',
+      'zuvis = int(input())',
+      '',
+      'print("Statinės:", statines)',
+      'print("Grūdų maišai:", grudai)',
+      'print("Žuvies statinės:", zuvis)',
+      'print("Viso:", statines + grudai + zuvis)'
+    ].join('\n')
+  }
+};
+
+/* --------------------------------------------- sekimo lentelės sudarymas */
+
+function toBase64(text) {
+  const bytes = new TextEncoder().encode(text);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary);
+}
+
+(function buildTable() {
+  const code = {};
+  Object.keys(SAMPLE.code).forEach(id => code[id] = toBase64(SAMPLE.code[id]));
+
+  const suspend = JSON.stringify({
+    v: 4, game: SAMPLE.game, phase: 'task', index: 1,
+    completed: SAMPLE.solved.length, solved: SAMPLE.solved, scores: SAMPLE.scores, code: code
+  });
+
+  const rows = [
+    ['cmi.completion_status', 'incomplete'],
+    ['cmi.location', '1'],
+    ['cmi.progress_measure', '0.2'],
+    ['cmi.score.raw', '20'],
+    ['cmi.success_status', 'failed'],
+    ['cmi.suspend_data', suspend]
+  ];
+
+  const body = document.getElementById('tracks');
+  rows.forEach(([key, value]) => {
+    const tr = document.createElement('tr');
+    const k = document.createElement('td');
+    k.className = 'cell c0';
+    k.textContent = key;
+    // tikroje ataskaitoje šalia vardo būna žinyno piktograma – įdedam ir čia
+    k.insertAdjacentHTML('beforeend', '<a class="help-icon" role="button"><i class="icon" title="Žinynas"></i></a>');
+    const v = document.createElement('td');
+    v.className = 'cell c1';
+    v.textContent = value;
+    tr.appendChild(k);
+    tr.appendChild(v);
+    body.appendChild(tr);
+  });
+})();
+
+/* ------------------------------------------------- blokelio turinio įkėlimas */
+
+fetch('../dist/moodle-block.html')
+  .then(r => r.text())
+  .then(html => {
+    const slot = document.getElementById('block-slot');
+
+    // Moodle blokelių turinį valo ir stiliaus žymes pašalina – imituojam tą patį,
+    // kad bandymas parodytų tikrąjį elgesį, o ne palankesnį už jį
+    slot.innerHTML = html.replace(/<style[\s\S]*?<\/style>/gi, '');
+
+    slot.querySelectorAll('script').forEach(old => {
+      const script = document.createElement('script');
+      script.textContent = old.textContent;
+      document.body.appendChild(script);
+      old.remove();
+    });
+  })
+  .catch(() => {
+    document.getElementById('block-slot').textContent =
+      'Nerastas ../dist/moodle-block.html — sugeneruok jį: npm run build:viewer';
+  });
+</script>
+</body>
+</html>

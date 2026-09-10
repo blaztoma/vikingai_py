@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprendimų peržiūra — paleidimas</title>
+<style>
+  :root { --gold: #d9a441; --gold-soft: #f0c874; --border: #2c4252; --ink: #e8e2d2; --dim: #a9b4bd; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px 20px; min-height: 100vh;
+    background: #0b1620; color: var(--ink);
+    font-family: "Segoe UI", Roboto, system-ui, sans-serif; line-height: 1.6;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 6px; color: var(--gold-soft); }
+  h2 { font-size: 16px; margin: 32px 0 10px; color: var(--gold); }
+  p, li { font-size: 14.5px; color: #d5d9dd; }
+  .lead { color: var(--dim); margin-top: 0; }
+  ol { padding-left: 22px; }
+  code, kbd {
+    background: #08131b; border: 1px solid var(--border); border-radius: 5px;
+    padding: 2px 6px; font-size: 12.5px; color: var(--gold-soft);
+    font-family: Consolas, "Courier New", monospace;
+  }
+  .card {
+    background: #14242f; border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 8px;
+  }
+  .drag {
+    display: inline-block; margin: 6px 0 10px; padding: 12px 22px;
+    background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+    color: #2a1c05; font-weight: 700; text-decoration: none;
+    border-radius: 10px; box-shadow: 0 3px 0 #8c6a1c; cursor: grab;
+  }
+  button {
+    font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+    color: var(--dim); background: transparent; border: 1px solid var(--border);
+    border-radius: 8px; padding: 9px 16px;
+  }
+  button:hover { color: var(--ink); border-color: var(--gold); }
+  .status { font-size: 13px; color: var(--dim); margin-left: 10px; }
+  .warn { color: #e8c07f; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Mokinio sprendimų peržiūra</h1>
+  <p class="lead">Įrankis Moodle puslapiui, kuriame matoma SCORM sekimo informacija.
+     Jis suranda <code>cmi.suspend_data</code> lauką, iškoduoja sprendimus ir parodo juos patogiame lange.</p>
+
+  <h2>1. Kur naudoti</h2>
+  <div class="card">
+    <p style="margin-top:0">Moodle: <b>SCORM paketas → Ataskaitos → mokinio eilutė → „Sekimo išsami informacija“</b>.
+       Adresas atrodo maždaug taip:</p>
+    <p style="margin-bottom:0"><code>/mod/scorm/report/userreporttracks.php?id=…&amp;user=…&amp;attempt=1</code></p>
+  </div>
+
+  <h2>2. Adresyno mygtukas (patogiausia)</h2>
+  <div class="card">
+    <p style="margin-top:0">Nutempk šią nuorodą į naršyklės adresyno juostą. Vėliau, būdamas mokinio
+       ataskaitos puslapyje, tiesiog spustelėk ją.</p>
+    <a class="drag" id="bookmarklet" href="#">Vikingų sprendimai</a>
+    <p style="margin-bottom:0"><span id="size" class="status"></span></p>
+  </div>
+
+  <h2>3. Įklijavimas į konsolę</h2>
+  <div class="card">
+    <p style="margin-top:0">Jei adresyno mygtukas neveikia (kai kurios svetainės jį blokuoja),
+       ataskaitos puslapyje spausk <kbd>F12</kbd> → <b>Console</b> ir įklijuok kodą.</p>
+    <button id="copy" type="button">Kopijuoti kodą į iškarpinę</button>
+    <span class="status" id="copy-status"></span>
+    <p style="margin-bottom:0" class="warn" id="paste-hint">
+      Pirmą kartą Chrome gali paprašyti įrašyti <code>allow pasting</code> ir spausti Enter.
+    </p>
+  </div>
+
+  <h2>4. Bandymams be Moodle</h2>
+  <div class="card">
+    <p style="margin:0">Atsidaryk <a href="index.html" style="color:var(--gold-soft)">index.html</a> —
+       ten galima įklijuoti įrašytą ataskaitos puslapio HTML ir pamatyti tą patį langą.</p>
+  </div>
+
+</div>
+
+<script>
+/**
+ * Paleidimo kodas sudaromas iš tikrųjų viewer failų, todėl pataisius
+ * results-viewer.js ar .css užtenka perkrauti šį puslapį — mygtukas atsinaujina.
+ */
+(async function () {
+  const sizeEl   = document.getElementById('size');
+  const linkEl   = document.getElementById('bookmarklet');
+  const copyEl   = document.getElementById('copy');
+  const statusEl = document.getElementById('copy-status');
+
+  let snippet = '';
+
+  try {
+    const [js, css] = await Promise.all([
+      fetch('results-viewer.js').then(r => r.text()),
+      fetch('results-viewer.css').then(r => r.text())
+    ]);
+
+    // CSS keliauja kartu su kodu – peržiūra neturi nieko krauti iš tinklo
+    snippet = '(function(){' +
+              'window.VIKINGS_VIEWER_CSS=' + JSON.stringify(css) + ';' +
+              'var s=document.getElementById("vkv-style"); if(s) s.remove();' +
+              js +
+              '})();';
+
+    linkEl.href = 'javascript:' + encodeURIComponent(snippet);
+    sizeEl.textContent = `Paruošta (${Math.round(snippet.length / 1024)} KB).`;
+  } catch (e) {
+    sizeEl.textContent = 'Nepavyko perskaityti viewer failų — atidaryk šį puslapį per serverį (http://localhost/…), o ne kaip failą.';
+    sizeEl.className = 'status warn';
+  }
+
+  linkEl.addEventListener('click', e => {
+    e.preventDefault();
+    alert('Šią nuorodą reikia nutempti į adresyno juostą, o paspausti — jau mokinio ataskaitos puslapyje.');
+  });
+
+  copyEl.addEventListener('click', () => {
+    if (!snippet) return;
+    navigator.clipboard.writeText(snippet).then(
+      () => { statusEl.textContent = 'Nukopijuota.'; },
+      () => { statusEl.textContent = 'Nepavyko nukopijuoti — pažymėk kodą rankiniu būdu.'; }
+    );
+  });
+})();
+</script>
+</body>
+</html>

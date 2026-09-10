@@ -1,0 +1,401 @@
+<!--
+  Vikingų kelias — mokinio sprendimų peržiūra.
+  Sugeneruota tools/build-viewer.js (2026-09-10).
+  Visas turinys viename faile: stiliai, kodas ir paleidimo nuoroda.
+  Įkelti į Moodle: Įtraukti bloką → HTML → turinio redaktoriuje pereiti į HTML
+  rodinį (<> mygtukas) ir įklijuoti visą šį tekstą.
+
+  Stiliai laikomi skripto viduje, o ne atskira stiliaus žyme: Moodle blokelių
+  turinį valo ir tokią žymę dažnai pašalina — tada langas atsivertų be jokio
+  apipavidalinimo.
+-->
+<div class="vkv-block">
+  <a href="#" class="vkv-launch" data-vkv-launch>
+    <span class="vkv-launch-rune">ᚠ</span> Sprendimo peržiūra
+  </a>
+</div>
+
+<script>
+(function () {
+  if (window.VikingsResultsViewer) { bindLaunchers(); return; }
+  window.VIKINGS_VIEWER_AUTORUN = false;
+  window.VIKINGS_VIEWER_CSS = ".vkv-launch{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;font-family:\"Segoe UI\",Roboto,system-ui,sans-serif;font-size:14px;font-weight:600;color:#2a1c05;background:linear-gradient(180deg,#f0c874,#d9a441);border:1px solid #8c6a1c;border-radius:8px;box-shadow:0 2px 0 #8c6a1c;text-decoration:none;cursor:pointer}.vkv-launch:hover{filter:brightness(1.07);color:#2a1c05;text-decoration:none}.vkv-launch:active{transform:translateY(1px);box-shadow:none}.vkv-launch-rune{font-size:16px;line-height:1}.vkv-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(6,16,24,.78);backdrop-filter:blur(2px);font-family:\"Segoe UI\",Roboto,system-ui,sans-serif;animation:vkv-fade .18s ease}@keyframes vkv-fade{from{opacity:0}to{opacity:1}}.vkv-modal{display:flex;flex-direction:column;width:100%;max-width:1120px;height:100%;max-height:860px;background:#14242f;color:#e8e2d2;border:2px solid #2c4252;border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.55);overflow:hidden}.vkv-header{display:flex;align-items:center;gap:16px;padding:14px 18px;background:linear-gradient(180deg,#16293a,#0f1e2a);border-bottom:1px solid #2c4252}.vkv-titles{flex:1;min-width:0}.vkv-title{font-size:17px;font-weight:700;letter-spacing:.4px;color:#f0c874}.vkv-subtitle{font-size:13px;color:#a9b4bd;margin-top:2px}.vkv-close{flex:none;width:34px;height:34px;font-size:22px;line-height:1;color:#a9b4bd;background:rgba(255,255,255,.05);border:1px solid #2c4252;border-radius:8px;cursor:pointer;transition:background .15s ease,color .15s ease,border-color .15s ease}.vkv-close:hover{background:rgba(217,164,65,.18);border-color:#d9a441;color:#f0c874}.vkv-summary{display:flex;flex-wrap:wrap;gap:10px;padding:12px 18px;background:rgba(0,0,0,.18);border-bottom:1px solid #2c4252}.vkv-stat{display:flex;flex-direction:column;gap:2px;padding:6px 12px;background:#0a151d;border:1px solid #2c4252;border-radius:8px;min-width:130px}.vkv-stat-label{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#a9b4bd}.vkv-stat-value{font-size:15px;font-weight:600;color:#e8e2d2}.vkv-warning{padding:8px 18px;font-size:13px;color:#e8c07f;background:rgba(217,164,65,.12);border-bottom:1px solid #2c4252}.vkv-problem{padding:28px 22px;font-size:14.5px;line-height:1.6;color:#d5d9dd}.vkv-problem p{margin:0}.vkv-content{flex:1;display:grid;grid-template-columns:320px 1fr;min-height:0}.vkv-list{display:flex;flex-direction:column;gap:4px;padding:10px;overflow-y:auto;border-right:1px solid #2c4252;background:rgba(0,0,0,.12)}.vkv-level{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;text-align:left;color:#e8e2d2;background:transparent;border:1px solid transparent;border-radius:8px;cursor:pointer;font-family:inherit;transition:background .15s ease,border-color .15s ease}.vkv-level:hover{background:rgba(255,255,255,.05);border-color:#2c4252}.vkv-level-active{background:rgba(217,164,65,.14);border-color:#d9a441}.vkv-level-nocode{opacity:.55}.vkv-level-num{flex:none;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0b1620;background:#5b7183;border-radius:50%}.vkv-level-active .vkv-level-num{background:#d9a441}.vkv-level-text{flex:1;min-width:0;display:flex;flex-direction:column}.vkv-level-name{font-size:13.5px;font-weight:600}.vkv-level-topic{font-size:11.5px;color:#a9b4bd;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vkv-badge{flex:none;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:20px;border:1px solid transparent}.vkv-badge-ok{color:#9ede9f;background:rgba(111,191,115,.16);border-color:rgba(111,191,115,.5)}.vkv-badge-partial{color:#e8c07f;background:rgba(217,164,65,.16);border-color:rgba(217,164,65,.5)}.vkv-badge-none{color:#7c8d99;background:rgba(255,255,255,.04);border-color:#2c4252}.vkv-pane{display:flex;flex-direction:column;min-width:0;min-height:0}.vkv-pane-head{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #2c4252;background:rgba(0,0,0,.18)}.vkv-code-title{font-size:14px;font-weight:600;color:#f0c874}.vkv-code-meta{font-size:12px;color:#a9b4bd;margin-top:2px}.vkv-copy{margin-left:auto;flex:none;font-family:inherit;font-size:12.5px;font-weight:600;color:#a9b4bd;background:rgba(255,255,255,.05);border:1px solid #2c4252;border-radius:8px;padding:6px 14px;cursor:pointer;transition:background .15s ease,color .15s ease,border-color .15s ease}.vkv-copy:hover:not(:disabled){background:rgba(217,164,65,.18);border-color:#d9a441;color:#f0c874}.vkv-copy:disabled{opacity:.4;cursor:default}.vkv-code-body{flex:1;display:flex;min-height:0;overflow:auto;background:#08131b}.vkv-gutter,.vkv-code{margin:0;padding:14px 0;font-family:Consolas,\"Courier New\",monospace;font-size:13px;line-height:20px;background:none;border:0;white-space:pre}.vkv-gutter{padding-left:14px;padding-right:12px;color:#40606f;text-align:right;user-select:none;border-right:1px solid #2c4252;flex:none}.vkv-code{padding-left:14px;padding-right:18px;color:#d7e6c9;flex:1}.vkv-empty{margin:auto;padding:30px;max-width:420px;text-align:center;font-size:13.5px;line-height:1.6;color:#a9b4bd}.vkv-modal ::-webkit-scrollbar{width:10px;height:10px}.vkv-modal ::-webkit-scrollbar-track{background:#0a151d}.vkv-modal ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#f0c874,#9c7423);border:2px solid #0a151d;border-radius:8px}@media (max-width:820px){.vkv-overlay{padding:10px}.vkv-content{grid-template-columns:1fr;grid-template-rows:200px 1fr}.vkv-list{border-right:0;border-bottom:1px solid #2c4252}}";
+
+(function (global) {
+'use strict';
+const VERSION = '2.0';
+const STRINGS = {
+lt: {
+title:      'Mokinio sprendimai',
+attempt:    'bandymas',
+unknown:    'Nežinomas mokinys',
+level:      'lygis',
+solvedOf:   'Įveikta uždavinių',
+grade:      'Įvertinimas',
+status:     'Būsena',
+completed:  'baigta',
+incomplete: 'nebaigta',
+lmsScore:   'Rezultatas LMS',
+passedLbl:  'Įskaityta',
+yes:        'taip',
+no:         'ne',
+of:         'iš',
+copy:       'Kopijuoti',
+copied:     'Nukopijuota',
+copyFailed: 'Nepavyko',
+close:      'Uždaryti (Esc)',
+result:     'Rezultatas',
+counted:    'įskaityta',
+notSolved:  'Uždavinys dar nespręstas',
+noCode:     'Šio lygio sprendimas neišsaugotas. Programa įrašoma tada, kai mokinys ' +
+'paspaudžia „Paleisti“ arba „Tikrinti“.',
+trimmed:    'Dėmesio: dalis sprendimų netilpo į LMS lauką ir nebuvo išsaugoti.',
+notFound:   'Šiame puslapyje nerastas cmi.suspend_data laukas. ' +
+'Atsidaryk SCORM ataskaitą: Ataskaitos → mokinys → „Sekimo išsami informacija“.',
+badJson:    'cmi.suspend_data turinys nėra taisyklingas JSON — gali būti, kad paketas senesnės versijos.'
+},
+en: {
+title:      'Student solutions',
+attempt:    'attempt',
+unknown:    'Unknown student',
+level:      'level',
+solvedOf:   'Tasks solved',
+grade:      'Grade',
+status:     'Status',
+completed:  'completed',
+incomplete: 'incomplete',
+lmsScore:   'LMS score',
+passedLbl:  'Passed',
+yes:        'yes',
+no:         'no',
+of:         'of',
+copy:       'Copy',
+copied:     'Copied',
+copyFailed: 'Failed',
+close:      'Close (Esc)',
+result:     'Score',
+counted:    'passed',
+notSolved:  'Task not attempted yet',
+noCode:     'No solution stored for this level. The program is saved when the student ' +
+'presses “Run” or “Check”.',
+trimmed:    'Note: some solutions did not fit into the LMS field and were not stored.',
+notFound:   'No cmi.suspend_data field on this page. Open the SCORM report: ' +
+'Reports → student → “Track details”.',
+badJson:    'cmi.suspend_data is not valid JSON — the package may be an older version.'
+}
+};
+function strings(lang) {
+return STRINGS[String(lang || '').toLowerCase().slice(0, 2)] || STRINGS.lt;
+}
+function readTracks(root) {
+const values = {};
+root.querySelectorAll('tr').forEach(tr => {
+const cells = tr.querySelectorAll('td');
+if (cells.length < 2) return;
+const key = cells[0].textContent.trim().split(/\s+/)[0];
+if (!key || key.indexOf('cmi.') !== 0) return;
+values[key] = cells[1].textContent.trim();
+});
+return values;
+}
+function decodeBase64(value) {
+try {
+const binary = atob(String(value).replace(/\s+/g, ''));
+const bytes = new Uint8Array(binary.length);
+for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+return new TextDecoder().decode(bytes);
+} catch (e) {
+return '';
+}
+}
+function readStudent(root) {
+const heading = root.querySelector('#region-main h3, .box h3, h3');
+const text = heading ? heading.textContent.trim() : '';
+const match = text.match(/^\s*[^\d]*?(\d+)\s*[-–]\s*([^:]+):/);
+if (match) {
+return { name: match[2].trim(), attempt: match[1] };
+}
+return { name: text, attempt: '' };
+}
+function buildLevels(game, scores, codes, solved, t) {
+if (game && Array.isArray(game.levels) && game.levels.length) {
+return game.levels.map(level => ({
+id:    level.id,
+name:  level.name || `${level.id} ${t.level}`,
+topic: level.topic || ''
+}));
+}
+const ids = {};
+Object.keys(scores).forEach(id => ids[id] = true);
+Object.keys(codes).forEach(id => ids[id] = true);
+solved.forEach(id => ids[id] = true);
+const known = Object.keys(ids).map(Number).filter(n => !isNaN(n)).sort((a, b) => a - b);
+const total = (game && game.total) ? Number(game.total) : (known[known.length - 1] || 0);
+const list = [];
+for (let id = 1; id <= total; id++) {
+list.push({ id: id, name: `${id} ${t.level}`, topic: '' });
+}
+return list;
+}
+function parse(root) {
+const tracks  = readTracks(root);
+const student = readStudent(root);
+const raw     = tracks['cmi.suspend_data'];
+let t = strings(null);
+if (!raw) {
+return { ok: false, t: t, student: student, reason: t.notFound };
+}
+let data;
+try {
+data = JSON.parse(raw);
+} catch (e) {
+return { ok: false, t: t, student: student, reason: t.badJson };
+}
+const game   = data.game || null;
+t = strings(game && game.lang);
+const scores = data.scores || {};
+const codes  = data.code || {};
+const solved = Array.isArray(data.solved) ? data.solved : [];
+const levels = buildLevels(game, scores, codes, solved, t).map(level => ({
+id:     level.id,
+name:   level.name,
+topic:  level.topic,
+score:  (scores[level.id] !== undefined) ? Number(scores[level.id]) : null,
+solved: solved.indexOf(level.id) !== -1,
+code:   codes[level.id] ? decodeBase64(codes[level.id]) : ''
+}));
+return {
+ok: true,
+t: t,
+game: game,
+student: student.name ? student : { name: t.unknown, attempt: student.attempt },
+tracks: tracks,
+levels: levels,
+solvedCount: solved.length,
+total: (game && game.total) ? Number(game.total) : levels.length,
+trimmed: !!data.trimmed
+};
+}
+function ensureStyles() {
+if (document.getElementById('vkv-style')) return;
+if (global.VIKINGS_VIEWER_CSS) {
+const style = document.createElement('style');
+style.id = 'vkv-style';
+style.textContent = global.VIKINGS_VIEWER_CSS;
+document.head.appendChild(style);
+return;
+}
+const dir = scriptDir();
+if (!dir) {
+console.warn('[Peržiūra] Nerasti stiliai: nei VIKINGS_VIEWER_CSS, nei skripto adresas. ' +
+'Sugeneruok blokelį iš naujo: npm run build:viewer');
+return;
+}
+const link = document.createElement('link');
+link.id = 'vkv-style';
+link.rel = 'stylesheet';
+link.href = dir + 'results-viewer.css';
+document.head.appendChild(link);
+}
+const SCRIPT_DIR = (function () {
+const src = (document.currentScript && document.currentScript.src) ||
+(global.VIKINGS_VIEWER_SRC || '');
+return src ? src.replace(/[^/]*$/, '') : '';
+})();
+function scriptDir() {
+return SCRIPT_DIR;
+}
+let state = { levels: [], current: null, t: strings(null) };
+function close() {
+const existing = document.getElementById('vkv-overlay');
+if (existing) existing.remove();
+document.removeEventListener('keydown', onKeyDown);
+}
+function onKeyDown(e) {
+if (e.key === 'Escape') close();
+}
+function el(tag, className, text) {
+const node = document.createElement(tag);
+if (className) node.className = className;
+if (text !== undefined) node.textContent = text;
+return node;
+}
+function levelRow(level) {
+const row = el('button', 'vkv-level');
+row.type = 'button';
+row.dataset.level = String(level.id);
+const num = el('span', 'vkv-level-num', String(level.id));
+const box = el('span', 'vkv-level-text');
+box.appendChild(el('span', 'vkv-level-name', level.name));
+box.appendChild(el('span', 'vkv-level-topic', level.topic));
+const badge = el('span', 'vkv-badge');
+if (level.score !== null) {
+badge.textContent = level.score + '/100';
+badge.classList.add(level.solved ? 'vkv-badge-ok' : 'vkv-badge-partial');
+} else {
+badge.textContent = '—';
+badge.classList.add('vkv-badge-none');
+}
+row.appendChild(num);
+row.appendChild(box);
+row.appendChild(badge);
+if (!level.code) row.classList.add('vkv-level-nocode');
+row.addEventListener('click', () => selectLevel(level.id));
+return row;
+}
+function selectLevel(id) {
+state.current = id;
+document.querySelectorAll('.vkv-level').forEach(node => {
+node.classList.toggle('vkv-level-active', node.dataset.level === String(id));
+});
+const level = state.levels.filter(l => l.id === id)[0];
+if (!level) return;
+const t = state.t;
+const title = document.getElementById('vkv-code-title');
+title.textContent = `${level.id}. ${level.name}` + (level.topic ? ` — ${level.topic}` : '');
+const meta = document.getElementById('vkv-code-meta');
+meta.textContent = (level.score !== null)
+? `${t.result}: ${level.score}/100${level.solved ? ' · ' + t.counted : ''}`
+: t.notSolved;
+const body = document.getElementById('vkv-code-body');
+body.innerHTML = '';
+if (!level.code) {
+body.appendChild(el('div', 'vkv-empty', t.noCode));
+document.getElementById('vkv-copy').disabled = true;
+return;
+}
+document.getElementById('vkv-copy').disabled = false;
+const lines = level.code.replace(/\r\n/g, '\n').split('\n');
+const gutter = el('pre', 'vkv-gutter',
+lines.map((_, i) => i + 1).join('\n'));
+const code = el('pre', 'vkv-code', level.code);
+body.appendChild(gutter);
+body.appendChild(code);
+}
+function buildModal(result) {
+close();
+ensureStyles();
+const t = result.t || strings(null);
+state.t = t;
+const overlay = el('div', 'vkv-overlay');
+overlay.id = 'vkv-overlay';
+overlay.addEventListener('click', (e) => {
+if (e.target === overlay) close();
+});
+const modal = el('div', 'vkv-modal');
+const header = el('div', 'vkv-header');
+const gameTitle = (result.game && result.game.title) ? result.game.title : '';
+const titles = el('div', 'vkv-titles');
+titles.appendChild(el('div', 'vkv-title',
+gameTitle ? `${gameTitle} — ${t.title}` : t.title));
+titles.appendChild(el('div', 'vkv-subtitle',
+result.student.name + (result.student.attempt ? ` · ${result.student.attempt} ${t.attempt}` : '')));
+header.appendChild(titles);
+const closeBtn = el('button', 'vkv-close', '×');
+closeBtn.type = 'button';
+closeBtn.title = t.close;
+closeBtn.setAttribute('aria-label', t.close);
+closeBtn.addEventListener('click', close);
+header.appendChild(closeBtn);
+modal.appendChild(header);
+if (!result.ok) {
+const problem = el('div', 'vkv-problem');
+problem.appendChild(el('p', null, result.reason));
+modal.appendChild(problem);
+overlay.appendChild(modal);
+document.body.appendChild(overlay);
+document.addEventListener('keydown', onKeyDown);
+return;
+}
+const summary = el('div', 'vkv-summary');
+const percent = Math.round(result.solvedCount / result.total * 100);
+[
+[t.solvedOf,  `${result.solvedCount} ${t.of} ${result.total}`],
+[t.grade,     `${percent}%`],
+[t.status,    result.tracks['cmi.completion_status'] === 'completed' ? t.completed : t.incomplete],
+[t.lmsScore,  (result.tracks['cmi.score.raw'] || '—') + ' / 100'],
+[t.passedLbl, result.tracks['cmi.success_status'] === 'passed' ? t.yes : t.no]
+].forEach(pair => {
+const item = el('div', 'vkv-stat');
+item.appendChild(el('span', 'vkv-stat-label', pair[0]));
+item.appendChild(el('span', 'vkv-stat-value', pair[1]));
+summary.appendChild(item);
+});
+modal.appendChild(summary);
+if (result.trimmed) {
+modal.appendChild(el('div', 'vkv-warning', t.trimmed));
+}
+const content = el('div', 'vkv-content');
+const list = el('div', 'vkv-list');
+result.levels.forEach(level => list.appendChild(levelRow(level)));
+content.appendChild(list);
+const pane = el('div', 'vkv-pane');
+const paneHead = el('div', 'vkv-pane-head');
+const codeTitle = el('div', 'vkv-code-title');
+codeTitle.id = 'vkv-code-title';
+const codeMeta = el('div', 'vkv-code-meta');
+codeMeta.id = 'vkv-code-meta';
+const paneTitles = el('div');
+paneTitles.appendChild(codeTitle);
+paneTitles.appendChild(codeMeta);
+paneHead.appendChild(paneTitles);
+const copyBtn = el('button', 'vkv-copy', t.copy);
+copyBtn.type = 'button';
+copyBtn.id = 'vkv-copy';
+copyBtn.addEventListener('click', () => {
+const level = state.levels.filter(l => l.id === state.current)[0];
+if (!level || !level.code) return;
+const done = (word) => {
+copyBtn.textContent = word;
+setTimeout(() => copyBtn.textContent = t.copy, 1500);
+};
+navigator.clipboard.writeText(level.code).then(
+() => done(t.copied),
+() => done(t.copyFailed)
+);
+});
+paneHead.appendChild(copyBtn);
+pane.appendChild(paneHead);
+const body = el('div', 'vkv-code-body');
+body.id = 'vkv-code-body';
+pane.appendChild(body);
+content.appendChild(pane);
+modal.appendChild(content);
+overlay.appendChild(modal);
+document.body.appendChild(overlay);
+document.addEventListener('keydown', onKeyDown);
+state.levels = result.levels;
+const withCode = result.levels.filter(l => l.code)[0];
+selectLevel(withCode ? withCode.id : result.levels[0].id);
+}
+function open(source) {
+buildModal(parse(source || document));
+}
+function openFromHtml(html) {
+const doc = new DOMParser().parseFromString(html, 'text/html');
+buildModal(parse(doc));
+}
+global.VikingsResultsViewer = {
+version: VERSION,
+open: open,
+openFromHtml: openFromHtml,
+close: close,
+parse: parse
+};
+if (global.VIKINGS_VIEWER_AUTORUN !== false) open();
+})(window);
+
+  bindLaunchers();
+
+  function bindLaunchers() {
+    document.querySelectorAll('[data-vkv-launch]').forEach(function (link) {
+      if (link.dataset.vkvBound) return;
+      link.dataset.vkvBound = '1';
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.VikingsResultsViewer.open();
+      });
+    });
+  }
+})();
+</script>

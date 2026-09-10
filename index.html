@@ -23,6 +23,11 @@
       <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
 
+    <label class="level-jump" title="Grįžti prie jau įveikto uždavinio">
+      <span class="level-jump-label">Uždavinys</span>
+      <select id="level-jump"></select>
+    </label>
+
     <div class="topbar-actions">
       <button class="btn btn-ghost" id="btn-clear-code"
               title="Ištrinti visus išsaugotus programų tekstus">Šalinti sprendimus</button>
@@ -202,6 +207,11 @@
 
   </main>
 </div>
+
+<!-- SCORM: pirma surandama tikroji LMS API, tik paskui uždedamas skydas lygiams -->
+<script src="js/config.js"></script>
+<script src="js/scorm.js"></script>
+<script src="js/level-scorm-shim.js"></script>
 
 <script src="js/locations.js"></script>
 <script src="js/tasks.js"></script>

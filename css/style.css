@@ -93,7 +93,36 @@ html, body {
   text-transform: uppercase;
 }
 
-.topbar-actions { display: flex; gap: 8px; margin-left: auto; }
+/* uždavinių sąrašas – grįžimui prie jau įveiktų */
+.level-jump {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.level-jump-label {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.level-jump select {
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: #0a151d;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 10px;
+  max-width: 260px;
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease;
+}
+.level-jump select:hover:not(:disabled) { border-color: var(--gold); color: var(--gold-soft); }
+.level-jump select:disabled { opacity: .45; cursor: default; }
+.level-jump option { background: #0a151d; color: var(--ink); }
+
+.topbar-actions { display: flex; gap: 8px; }
 
 .progress { flex: 1; max-width: 420px; }
 .progress-label { font-size: 12px; color: var(--ink-dim); margin-bottom: 5px; letter-spacing: .5px; }
@@ -355,6 +384,21 @@ body.resizing iframe { pointer-events: none; }
 .route-track { stroke: none; fill: none; }
 
 .marker { cursor: default; }
+.marker-hit { fill: transparent; }
+
+/* vietovės, į kurias galima grįžti */
+.marker.open { cursor: pointer; }
+.marker.open:hover .marker-dot { stroke: var(--gold-soft); stroke-width: 3.5; }
+.marker.open:hover .marker-label { fill: var(--gold-soft); }
+
+/* šiuo metu peržiūrima vietovė */
+.marker.reviewing .marker-dot {
+  fill: var(--sea-line);
+  stroke: #ffffff;
+  stroke-width: 3;
+}
+.marker.reviewing .marker-label { fill: var(--sea-line); font-size: 15px; }
+.marker.reviewing .marker-halo { opacity: 1; fill: rgba(127, 208, 232, .22); }
 .marker-halo { fill: rgba(217, 164, 65, .18); opacity: 0; transition: opacity .3s ease; }
 .marker-dot {
   fill: #5b7183;
@@ -908,6 +952,10 @@ body.resizing iframe { pointer-events: none; }
 .placeholder-text { font-size: 13px; color: var(--ink-dim); line-height: 1.5; }
 .placeholder.task { border-color: #3a5a44; }
 .placeholder.task .placeholder-icon { color: var(--done); }
+
+/* peržiūrimas senas uždavinys */
+.panel[data-phase="review"] { border-color: var(--sea-line); }
+.panel[data-phase="review"] .panel-kicker { color: var(--sea-line); }
 
 /* uždavinys išspręstas (signalas iš lygio iframe) */
 .panel.solved { border-color: var(--done); }

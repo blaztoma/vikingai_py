@@ -51,8 +51,16 @@ const GameMap = (function () {
     LOCATIONS.forEach((loc, i) => {
       const g = el('g', { class: 'marker locked', transform: `translate(${loc.x},${loc.y})` });
 
+      // nematomas platesnis apskritimas – kad pataikyti būtų lengviau nei į patį tašką
+      g.appendChild(el('circle', { class: 'marker-hit', r: 22 }));
       g.appendChild(el('circle', { class: 'marker-halo', r: 20 }));
       g.appendChild(el('circle', { class: 'marker-dot',  r: 9 }));
+
+      g.addEventListener('click', () => {
+        if (g.classList.contains('open') && typeof onMarkerClick === 'function') {
+          onMarkerClick(i);
+        }
+      });
 
       const num = el('text', { class: 'marker-num', y: 4.5 });
       num.textContent = loc.id;
@@ -143,12 +151,26 @@ const GameMap = (function () {
     });
   }
 
-  /** Perpiešia vietovių ir maršrutų būsenas pagal pasiektą vietovę */
-  function update(currentIndex, completedCount) {
+  let onMarkerClick = null;
+
+  /**
+   * Perpiešia vietovių ir maršrutų būsenas.
+   *
+   * @param currentIndex   kelionės vieta (kur stovi laivas)
+   * @param completedCount kiek vietovių įveikta
+   * @param opts.open      indeksų sąrašas, į kuriuos galima grįžti (spaudžiami)
+   * @param opts.review    šiuo metu peržiūrima vietovė arba null
+   */
+  function update(currentIndex, completedCount, opts) {
+    const open   = (opts && opts.open) || [];
+    const review = (opts && opts.review !== undefined) ? opts.review : null;
+
     markerEls.forEach((g, i) => {
       g.classList.toggle('done',    i < completedCount);
       g.classList.toggle('current', i === currentIndex);
       g.classList.toggle('locked',  i > currentIndex);
+      g.classList.toggle('open',    open.indexOf(i) !== -1);
+      g.classList.toggle('reviewing', i === review);
     });
 
     routePaths.forEach((seg, i) => {
@@ -163,5 +185,8 @@ const GameMap = (function () {
     shipEl.node = drawShip();
   }
 
-  return { init, update, sail, placeShipAt, svg };
+  return {
+    init, update, sail, placeShipAt, svg,
+    onMarkerClick: (fn) => { onMarkerClick = fn; }
+  };
 })();

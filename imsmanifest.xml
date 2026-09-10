@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Vikingų kelias (Python) — SCORM 2004 4th Edition paketas.
+
+  2004 pasirinkta dėl cmi.suspend_data talpos: 64 000 simbolių prieš 4 096
+  SCORM 1.2 versijoje. Ten telpa visų dešimties uždavinių sprendimai (base64).
+
+  Failų sąrašą tarp FILES žymių automatiškai perrašo tools/pack.js, kai
+  pakuojamas ZIP — rankomis jo pildyti nereikia.
+-->
+<manifest identifier="vikings_py_scorm_2004"
+          version="1.0"
+          xmlns="http://www.imsglobal.org/xsd/imscp_v1p1"
+          xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_v1p3"
+          xmlns:adlseq="http://www.adlnet.org/xsd/adlseq_v1p3"
+          xmlns:adlnav="http://www.adlnet.org/xsd/adlnav_v1p3"
+          xmlns:imsss="http://www.imsglobal.org/xsd/imsss"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 imscp_v1p1.xsd
+                              http://www.adlnet.org/xsd/adlcp_v1p3 adlcp_v1p3.xsd
+                              http://www.adlnet.org/xsd/adlseq_v1p3 adlseq_v1p3.xsd
+                              http://www.adlnet.org/xsd/adlnav_v1p3 adlnav_v1p3.xsd
+                              http://www.imsglobal.org/xsd/imsss imsss_v1p0.xsd">
+
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>2004 4th Edition</schemaversion>
+  </metadata>
+
+  <organizations default="vikings_org">
+    <organization identifier="vikings_org" structure="hierarchical">
+      <title>Vikingų kelias — Python programavimo nuotykis</title>
+
+      <item identifier="item_game" identifierref="res_game" isvisible="true">
+        <title>Vikingų kelias (Python)</title>
+
+        <adlcp:timeLimitAction>continue,no message</adlcp:timeLimitAction>
+        <adlcp:completionThreshold completedByMeasure="true" minProgressMeasure="1.0"/>
+
+        <imsss:sequencing>
+          <imsss:objectives>
+            <imsss:primaryObjective objectiveID="obj_game" satisfiedByMeasure="true">
+              <imsss:minNormalizedMeasure>0.6</imsss:minNormalizedMeasure>
+            </imsss:primaryObjective>
+          </imsss:objectives>
+          <imsss:deliveryControls completionSetByContent="true" objectiveSetByContent="true"/>
+        </imsss:sequencing>
+      </item>
+    </organization>
+  </organizations>
+
+  <resources>
+    <resource identifier="res_game" type="webcontent" adlcp:scormType="sco" href="index.html">
+      <!-- FILES:BEGIN -->
+      <file href="index.html"/>
+      <!-- FILES:END -->
+    </resource>
+  </resources>
+
+</manifest>

@@ -12,11 +12,29 @@
  * 1 vietovė → videos/video_1.mp4 (kartu ir įvadinis), 2 vietovė → video_2.mp4 ir t.t.
  */
 function locationVideo(locationId) {
-  return `videos/video_${locationId}.mp4`;
+  return `${videoBase()}video_${locationId}.mp4`;
 }
 
 /** Baigiamasis filmas – po paskutinės vietovės uždavinio */
-const OUTRO_VIDEO = 'videos/outro.mp4';
+const OUTRO_VIDEO = `${videoBase()}outro.mp4`;
+
+/**
+ * Lygio programos adresas.
+ *
+ * Būtinai su „index.html“: Apache katalogo adresą pats išverstų į index.html,
+ * bet Moodle failus pateikia per pluginfile.php ir atiduoda tik tikslų failo
+ * kelią — katalogo adresu grąžintų 404.
+ */
+function levelUrl(loc) {
+  const dir = loc.task.endsWith('/') ? loc.task : loc.task + '/';
+  return dir + 'index.html';
+}
+
+/** Filmų katalogas: paketo viduje arba išorinis adresas iš js/config.js */
+function videoBase() {
+  const base = (typeof VIDEO_BASE === 'string' && VIDEO_BASE) ? VIDEO_BASE : 'videos/';
+  return base.endsWith('/') ? base : base + '/';
+}
 
 const LOCATIONS = [
   {
