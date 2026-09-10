@@ -37,6 +37,7 @@ const Game = (function () {
     next:     document.getElementById('btn-next'),
     reset:    document.getElementById('btn-reset'),
     clear:    document.getElementById('btn-clear-code'),
+    full:     document.getElementById('btn-fullscreen'),
     jump:     document.getElementById('level-jump'),
     panel:    document.getElementById('panel'),
     current:  document.getElementById('progress-current'),
@@ -628,6 +629,75 @@ const Game = (function () {
     ui.next.classList.add('pulse');
   }
 
+  /* ------------------------------------------------- viso ekrano režimas */
+
+  /**
+   * Moodle žaidimą rodo rėmelyje, todėl išdidinti reikia patį rėmelį — jis
+   * priklauso Moodle puslapiui, o mes su juo esam tos pačios kilmės, tad
+   * kreiptis galima. Jei rėmelio nėra (paleista tiesiogiai), didinamas savas
+   * dokumentas.
+   */
+  function fullscreenTarget() {
+    try {
+      if (window.frameElement) return window.frameElement;
+    } catch (e) { /* kitos kilmės tėvinis langas */ }
+    return document.documentElement;
+  }
+
+  /** Dokumentas, kuriame reikia tikrinti ir nutraukti viso ekrano būseną */
+  function fullscreenDoc() {
+    const target = fullscreenTarget();
+    return (target.ownerDocument) || document;
+  }
+
+  function isFullscreen() {
+    try {
+      return !!fullscreenDoc().fullscreenElement;
+    } catch (e) {
+      return !!document.fullscreenElement;
+    }
+  }
+
+  async function toggleFullscreen() {
+    try {
+      if (isFullscreen()) {
+        await fullscreenDoc().exitFullscreen();
+        return;
+      }
+      await fullscreenTarget().requestFullscreen();
+    } catch (e) {
+      // rėmelio išdidinti neleista – bandom bent savo dokumentą
+      try {
+        await document.documentElement.requestFullscreen();
+      } catch (e2) {
+        console.warn('[Vikingai] Viso ekrano režimo naršyklė neleido:', e2.message);
+        ui.full.disabled = true;
+        ui.full.title = 'Viso ekrano režimas šioje aplinkoje neleidžiamas';
+      }
+    }
+  }
+
+  function syncFullscreenButton() {
+    const on = isFullscreen();
+    ui.full.classList.toggle('is-full', on);
+    ui.full.title = on ? 'Grįžti į įprastą rodinį' : 'Rodyti per visą ekraną';
+    ui.full.setAttribute('aria-label', ui.full.title);
+  }
+
+  /** Mygtukas atsiranda tik tada, kai žaidimas iš tikrųjų sukasi LMS aplinkoje */
+  function setupFullscreen() {
+    if (!Scorm.isAvailable()) return;
+
+    ui.full.hidden = false;
+    ui.full.addEventListener('click', toggleFullscreen);
+
+    document.addEventListener('fullscreenchange', syncFullscreenButton);
+    try {
+      const doc = fullscreenDoc();
+      if (doc !== document) doc.addEventListener('fullscreenchange', syncFullscreenButton);
+    } catch (e) { /* tėvinio dokumento nepasiekiam */ }
+  }
+
   /* ---------------------------------------------------- startas */
 
   function init() {
@@ -639,6 +709,7 @@ const Game = (function () {
 
     Theater.onLevelReady(restoreLevelCode);
     GameMap.onMarkerClick(jumpTo);
+    setupFullscreen();
     ui.jump.addEventListener('change', () => jumpTo(Number(ui.jump.value)));
 
     ui.next.addEventListener('click', next);

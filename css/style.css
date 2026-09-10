@@ -170,6 +170,28 @@ html, body {
 }
 .btn-ghost:hover { color: var(--ink); border-color: var(--gold); }
 
+/* mygtukas tik su piktograma – taupo vietą juostoje */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+}
+.btn-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.btn-icon .icon-collapse { display: none; }
+.btn-icon.is-full .icon-expand   { display: none; }
+.btn-icon.is-full .icon-collapse { display: inline; }
+
 /* ---------------------------------------------- scena */
 
 .stage {
